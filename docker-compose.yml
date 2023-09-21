@@ -5,6 +5,13 @@ volumes:
     external: true
 
 services:
+  static:
+    image: nginx
+    volumes:
+      - ./static:/usr/share/nginx/html
+    ports:
+      - 8080:80
+
   react:
     image: node:lts-bullseye
     command: /bin/bash run.sh
@@ -16,7 +23,7 @@ services:
     environment:
       HOST_OS: ${OS}
       NODE_ENV: development
-      HOST: "0.0.0.0"
+      HOST: '0.0.0.0'
 
   django:
     build:
@@ -46,7 +53,7 @@ services:
       POSTGRES_USER: hnrykm
       POSTGRES_PASSWORD: password
       POSTGRES_DB: beyondmd_db
-    
+
   pg-admin:
     image: dpage/pgadmin4
     volumes:
