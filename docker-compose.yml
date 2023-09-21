@@ -1,7 +1,7 @@
 volumes:
   beyondmd-data:
     external: true
-  pg-admin:
+  pg-admin-bmd:
     external: true
 
 services:
@@ -25,7 +25,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./service:/app
+      - ./server:/app
     ports:
       - 8000:8000
     environment:
@@ -39,7 +39,7 @@ services:
       dockerfile: Dockerfile.dev
     image: postgres:14.5-bullseye
     volumes:
-      - beyondmd:/var/lib/postgresql/data
+      - beyondmd-data:/var/lib/postgresql/data
     ports:
       - 15432:5432
     environment:
@@ -50,7 +50,7 @@ services:
   pg-admin:
     image: dpage/pgadmin4
     volumes:
-      - pg-admin:/var/lib/pgadmin
+      - pg-admin-bmd:/var/lib/pgadmin
     ports:
       - 5050:80
     environment:
