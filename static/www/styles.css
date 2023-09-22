@@ -1,6 +1,15 @@
 body {
 	font-family: 'Lato', sans-serif;
-	height: 100vh;
+	height: 99vh;
+}
+
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	height: 100%;
 }
 
 .blue {
@@ -13,32 +22,59 @@ body {
 }
 
 h1 {
-	font-size: 2em;
+	font-size: 3rem;
 }
 
 p {
-	font-size: 1em;
+	font-size: 1.7rem;
 }
 
-.container {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
-	height: 100%;
+.arrow {
+	transition: transform 250ms;
+}
+
+.arrow:hover {
+	transform: scale(1.3);
 }
 
 /* Spinning Logo */
-img {
-	height: 60px;
+.logo {
+	height: 5rem;
 	animation: rotation 2s infinite linear;
 }
+
 @keyframes rotation {
 	from {
 		transform: rotate(0deg);
 	}
 	to {
 		transform: rotate(359deg);
+	}
+}
+
+/* Show/Hide transitions */
+.show {
+	animation: fadeIn 3s ease;
+}
+
+.hide {
+	animation: fadeOut 3s;
+}
+
+@keyframes fadeIn {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeOut {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
 	}
 }
