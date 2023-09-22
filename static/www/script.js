@@ -1,6 +1,7 @@
 async function begin() {
 	const content = document.getElementById('content');
 	content.className = 'container hide';
-	await new Promise((resolve) => setTimeout(resolve, 1800));
+	await new Promise((resolve) => setTimeout(resolve, 3000));
+	content.style.display = 'none';
 	window.location.href = 'http://beyondmd.care';
 }
