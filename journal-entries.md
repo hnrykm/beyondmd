@@ -38,7 +38,7 @@ Today's blockers are...
     - None
 
 Notes:
-    Today wasn't as coding intensive as it was brainstorming a design that is relevant to the company without adding unnecessary bells and whistles for the sake of looking cool or making it into some type of game. The plan for the static webpage is mostly finalized and the React project (prompts 2 and 3) is coming together nicely. Thinking of adding an interactive chat interface with the ApiMedic API service. 
+    Today wasn't as coding intensive as it was brainstorming a design that is relevant to the company without adding unnecessary bells and whistles for the sake of looking cool or making it into some type of game. The plan for the static webpage is mostly finalized and the React project (prompts 2 and 3) is coming together nicely. Thinking of adding an interactive chatbot interface with the ApiMedic API service. 
 
 
 ## Friday, September 13, 2023
