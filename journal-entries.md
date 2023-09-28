@@ -44,6 +44,29 @@ Notes:
 ## Friday, September 13, 2023
 
 Today, I worked on...
+    - Configuring the docker-compose.yml file to launch a server on localhost:8080 for the static site
+    - Creating the HTML structure of the static page by linking the CSS file, Google Font, Favicon, and the JavaScript file.
+    - Creating the spinning logo using Photoshop to center and crop the logo and CSS transform animation.
+    - Configuring the CSS font, colors, FlexBox container, and fading animations by changing opacity
+    - Installing Material UI for the second/third prompt project
+
 Today, I overcame these struggles...
+    - Making the content center vertically on the page using FlexBox. align-items should have been simple but I learned that the height of the body has to be set in order to know where center is.
+    - After the content faded out, the content would reset/reappear before being redirected. In the JavaScript function begin(), I added display = 'none' to make the content stay gone.
+
 Today's blockers are...
+    - The same TCP error as before. Now that the static site is complete, its time to tackle this again.
+
+Notes:
+    - The planning paid off and came together well. There were some tweaks that needed to be made to the design. The original concept was clicking the icon to show the text then clicking the text to hide it. While I got this to work, it wasn't intuitive so I changed the design to resemble a start screen. While it doesn't seem like much, I implemented all I set out to do.
+
+
+## Monday, September 25, 2023
+
+Today, I worked on...
+
+Today, I overcame these struggles...
+
+Today's blockers are...
+
 Notes:

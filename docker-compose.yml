@@ -41,14 +41,11 @@ services:
       WAIT_TIMEOUT: 240
 
   postgres:
-    build:
-      context: data
-      dockerfile: Dockerfile.dev
-    image: postgres:14.5-bullseye
+    image: postgres:16.0-bullseye
     volumes:
-      - beyondmd-data:/var/lib/postgresql/data
+      - beyondmd-data:/var/lib/postgresql/data/
     ports:
-      - 15432:5432
+      - 5432:5432
     environment:
       POSTGRES_USER: hnrykm
       POSTGRES_PASSWORD: password
