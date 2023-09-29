@@ -1,8 +1,6 @@
 volumes:
   beyondmd-data:
     external: true
-  pg-admin-bmd:
-    external: true
 
 services:
   static:
@@ -50,14 +48,3 @@ services:
       POSTGRES_USER: hnrykm
       POSTGRES_PASSWORD: password
       POSTGRES_DB: beyondmd_db
-
-  pg-admin:
-    image: dpage/pgadmin4
-    volumes:
-      - pg-admin-bmd:/var/lib/pgadmin
-    ports:
-      - 5050:80
-    environment:
-      PGADMIN_DEFAULT_EMAIL: hnrykm@gmail.com
-      PGADMIN_DEFAULT_PASSWORD: password
-      PGADMIN_DISABLE_POSTFIX: 1

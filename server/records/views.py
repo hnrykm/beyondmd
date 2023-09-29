@@ -2,19 +2,19 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 import json
-
+from .encoders import RecordEncoder
 from .models import Record
 
 @require_http_methods(["GET", "POST"])
 def api_records(request):
     if request.method == "GET":
         records = Record.objects.all()
-        return JsonResponse({"records": records})
+        return JsonResponse({"records": records}, encoder=RecordEncoder)
     elif request.method == "POST":
         try:
             content = json.loads(request.body)
             record = Record.objects.create(**content)
-            return JsonResponse(record, safe=False)
+            return JsonResponse(record, encoder=RecordEncoder, safe=False)
         except Record.DoesNotExist:
             return JsonResponse(
                 {"message": "Invalid Record Input"}, 
@@ -28,7 +28,7 @@ def api_record(request, id):
             content = json.loads(request.body)
             Record.objects.filter(id=id).update(**content)
             record = Record.objects.get(id=id)
-            return JsonResponse(record, safe=False)
+            return JsonResponse(record, encoder=RecordEncoder, safe=False)
         except Record.DoesNotExist:
             return JsonResponse(
                 {"message": "Invalid Record ID"},
