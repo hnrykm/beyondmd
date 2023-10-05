@@ -10,11 +10,7 @@ class RecordEncoder(ModelEncoder):
         "last_name",
         "birth_year",
         "is_male",
-        "avatar",
         "symptom_1",
         "symptom_2",
-        "symptom_3",
-        "diagnosis_1",
-        "diagnosis_2",
-        "status",
+        "diagnosis",
     ]
