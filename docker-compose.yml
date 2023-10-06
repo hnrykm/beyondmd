@@ -11,17 +11,16 @@ services:
       - 8080:80
 
   react:
-    image: node:lts-bullseye
-    command: /bin/bash run.sh
-    working_dir: /app
+    build:
+      context: ./client
+      dockerfile: ./Dockerfile.dev
     volumes:
-      - ./client:/app
+      - ./client:/app:delegated
+      - /node_modules
     ports:
-      - 3000:3000
+      - '3000:3000'
     environment:
-      HOST_OS: ${OS}
-      NODE_ENV: development
-      HOST: '0.0.0.0'
+      - CHOKIDAR_USEPOLLING=true
 
   django:
     build:
