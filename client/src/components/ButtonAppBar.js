@@ -17,8 +17,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 // import SingleRecordForm from './SingleRecordForm';
-import Select from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
+
 import MenuItem from '@mui/material/MenuItem';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -81,9 +80,21 @@ const style = {
 
 export default function ButtonAppBar() {
 	const [symptoms, setSymptoms] = useState([]);
-	const [open, setOpen] = React.useState(false);
+	const [symptom1, setSymptom1] = useState('');
+	const [symptom2, setSymptom2] = useState('');
+
+	const [open, setOpen] = useState(false);
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
+
+	const [openSingle, setOpenSingle] = useState(false);
+	const handleOpenSingle = () => setOpenSingle(true);
+	const handleCloseSingle = () => setOpenSingle(false);
+
+	const [openDiagnosis, setOpenDiagnosis] = useState(false);
+	const handleOpenDiagnosis = () => setOpenDiagnosis(true);
+	const handleCloseDiagnosis = () => setOpenDiagnosis(false);
+
 	const [formData, setFormData] = useState({
 		exam_date: dayjs(),
 		first_name: '',
@@ -95,23 +106,18 @@ export default function ButtonAppBar() {
 		diagnosis: '',
 	});
 
+	const [results, setResults] = useState({});
+
 	const fetchSymptoms = async () => {
-		const url =
-			'https://sandbox-healthservice.priaid.ch/symptoms?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY2OTc4MzIsIm5iZiI6MTY5NjY5MDYzMn0.jAMC5vF8aoxqGpB1CUQGP7dTx0BQK_CJ3vWN4rQnZ_w&format=json&language=en-gb';
+		const api_medic_token =
+			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY3MDY2ODgsIm5iZiI6MTY5NjY5OTQ4OH0.j0bpdSvbQNiRJ4bt2fLKZNFCajYN3YMpzNsopfhFr_I';
+		const url = `https://sandbox-healthservice.priaid.ch/symptoms?token=${api_medic_token}&format=json&language=en-gb`;
 		const response = await fetch(url);
 		if (response.ok) {
 			const data = await response.json();
 			setSymptoms(data);
 		}
 	};
-
-	// const fetchDiagnosis = async () => {
-	// 	const response = await fetch(url);
-	// 	if (response.ok) {
-	// 		const data = await response.json();
-	// 		setSymptoms(data);
-	// 	}
-	// };
 
 	const handleFormChange = async (e) => {
 		const name = e.target.name;
@@ -128,13 +134,26 @@ export default function ButtonAppBar() {
 		const gender = JSON.parse(formData.is_male) ? 'male' : 'female';
 		const birth_year = formData.birth_year;
 		const api_medic_token =
-			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY3MDIyMTUsIm5iZiI6MTY5NjY5NTAxNX0.11uFUlWB1jmSHZundpKGiF0UZ756FDVW2EqepJQAr3g';
+			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY3MTE0NjYsIm5iZiI6MTY5NjcwNDI2Nn0.0qpuCi92CMscxRJ9-UEY7xcOVnpxIS5OMgjmtB9lWGY';
 		const url = `https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=${symptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${api_medic_token}&format=json&language=en-gb`;
 		const response = await fetch(url);
 		if (response.ok) {
 			const data = await response.json();
-			console.log(data);
+			console.log('returned data', data);
+			console.log('Here are the two symptom names:', symptom1, symptom2);
+			const diagnoses = data.map((diagnosis) => diagnosis.Issue.ProfName);
 
+			setResults({
+				exam_date: dayjs(formData.exam_date),
+				first_name: formData.first_name,
+				last_name: formData.last_name,
+				birth_year: formData.birth_year,
+				is_male: formData.is_male,
+				symptom_1: symptom1,
+				symptom_2: symptom2,
+				diagnosis: diagnoses,
+			});
+			results && console.log('returned diagnoses', results);
 			setFormData({
 				exam_date: dayjs(),
 				first_name: '',
@@ -145,7 +164,9 @@ export default function ButtonAppBar() {
 				symptom_2: '',
 				diagnosis: '',
 			});
+
 			handleClose();
+			handleOpenDiagnosis();
 		}
 	};
 
@@ -165,6 +186,8 @@ export default function ButtonAppBar() {
 					<Button color="inherit" onClick={handleOpen}>
 						Add Single Record
 					</Button>
+
+					{/* Add Single Record Modal */}
 					<Modal
 						aria-labelledby="spring-modal-title"
 						aria-describedby="spring-modal-description"
@@ -277,7 +300,11 @@ export default function ButtonAppBar() {
 										>
 											{symptoms &&
 												symptoms.map((symptom) => (
-													<MenuItem value={symptom.ID} id={symptom.ID}>
+													<MenuItem
+														value={symptom.ID}
+														id={symptom.ID}
+														onClick={() => setSymptom1(symptom.Name)}
+													>
 														{symptom.Name}
 													</MenuItem>
 												))}
@@ -295,14 +322,33 @@ export default function ButtonAppBar() {
 										>
 											{symptoms &&
 												symptoms.map((symptom) => (
-													<MenuItem value={symptom.ID} id={symptom.ID}>
+													<MenuItem
+														value={symptom.ID}
+														id={symptom.ID}
+														onClick={() => setSymptom2(symptom.Name)}
+													>
 														{symptom.Name}
 													</MenuItem>
 												))}
 										</TextField>
 									</FormControl>
 									<Box sx={{ pt: 1, justifyContent: 'flex-end' }}>
-										<Button variant="outlined" sx={{ mr: 2 }}>
+										<Button
+											variant="outlined"
+											sx={{ mr: 2 }}
+											onClick={(e) => {
+												setFormData({
+													exam_date: dayjs(),
+													first_name: '',
+													last_name: '',
+													birth_year: '',
+													is_male: '',
+													symptom_1: '',
+													symptom_2: '',
+													diagnosis: '',
+												});
+											}}
+										>
 											Reset
 										</Button>
 										<Button variant="contained" type="submit">
@@ -313,7 +359,101 @@ export default function ButtonAppBar() {
 							</Box>
 						</Fade>
 					</Modal>
-					<Button color="inherit">Add Multiple Records</Button>
+
+					{/* Diagnosis Loaded Modal */}
+					<Modal
+						aria-labelledby="spring-modal-title"
+						aria-describedby="spring-modal-description"
+						open={openDiagnosis}
+						onClose={handleCloseDiagnosis}
+						closeAfterTransition
+						slots={{ backdrop: Backdrop }}
+						slotProps={{
+							backdrop: {
+								TransitionComponent: Fade,
+							},
+						}}
+						sx={{ m: 6 }}
+					>
+						<Fade in={openDiagnosis}>
+							<Box sx={style}>
+								<Typography
+									id="spring-modal-title"
+									variant="h6"
+									component="h6"
+									sx={{ mb: 2 }}
+									justifyContent="center"
+								>
+									Returned Diagnosis
+								</Typography>
+								<Typography variant="h2">
+									{results.first_name} {results.last_name}
+								</Typography>
+								{results.is_male ? 'Male' : 'Female'}, Born{' '}
+								{dayjs(results.birth_year).format('DD/MM/YYY')} (Age{' '}
+								{dayjs().year() - results.birth_year}) Examined on{' '}
+								{dayjs(results.exam_date)}
+								<p>Symptoms include:</p>
+								{{ symptom2 } ? `${symptom1}, ${symptom2}` : `${symptom1}`}
+								<p>Possible Diagnoses:</p>
+								{results.diagnoses}
+							</Box>
+						</Fade>
+					</Modal>
+
+					<Button color="inherit" onClick={handleOpenSingle}>
+						Add Multiple Records
+					</Button>
+
+					{/* Add Multiple Records Modal */}
+					<Modal
+						aria-labelledby="spring-modal-title"
+						aria-describedby="spring-modal-description"
+						open={openSingle}
+						onClose={handleCloseSingle}
+						closeAfterTransition
+						slots={{ backdrop: Backdrop }}
+						slotProps={{
+							backdrop: {
+								TransitionComponent: Fade,
+							},
+						}}
+						sx={{ m: 6 }}
+					>
+						<Fade in={openSingle}>
+							<Box sx={style}>
+								<Typography
+									id="spring-modal-title"
+									variant="h4"
+									component="h4"
+									sx={{ mb: 2 }}
+								>
+									Add Multiple Records
+								</Typography>
+								<Box>Upload a CSV file to add multiple records</Box>
+								<Box
+									component="form"
+									sx={{
+										'& > :not(style)': { m: 1, width: '35ch' },
+									}}
+									autoComplete="off"
+									onSubmit={submitHandlerDiagnosis}
+								>
+									<Button>
+										<input type="file" size="large" />
+									</Button>
+									<Box sx={{ pt: 1, justifyContent: 'flex-end' }}>
+										<Button variant="outlined" sx={{ mr: 2 }}>
+											Reset
+										</Button>
+										<Button variant="contained" type="submit">
+											Upload
+										</Button>
+									</Box>
+								</Box>
+							</Box>
+						</Fade>
+					</Modal>
 					<Button color="inherit">View Resume</Button>
 					<Button color="inherit">Logout</Button>
 				</Toolbar>
