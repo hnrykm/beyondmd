@@ -89,7 +89,7 @@ export default function ButtonAppBar() {
 		first_name: '',
 		last_name: '',
 		birth_year: '',
-		is_male: 'True',
+		is_male: true,
 		symptom_1: '',
 		symptom_2: '',
 		diagnosis: '',
@@ -106,8 +106,6 @@ export default function ButtonAppBar() {
 	};
 
 	// const fetchDiagnosis = async () => {
-	// 	const url =
-	// 		'https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=[139]&gender=male&year_of_birth=1973&token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY2OTQxNjMsIm5iZiI6MTY5NjY4Njk2M30.MtTE1-rT1dQbF7jlGr8nnFLusJs3HrmO5k5vLWQcxgc&format=json&language=en-gb';
 	// 	const response = await fetch(url);
 	// 	if (response.ok) {
 	// 		const data = await response.json();
@@ -121,9 +119,34 @@ export default function ButtonAppBar() {
 		setFormData({ ...formData, [name]: value });
 	};
 
-	const submitHandlerDiangosis = (e) => {
-		console.log(formData);
+	const submitHandlerDiagnosis = async (e) => {
 		e.preventDefault();
+		console.log(formData);
+		const symptoms = formData.symptom_2
+			? `[${formData.symptom_1},${formData.symptom_2}]`
+			: `[${formData.symptom_1}]`;
+		const gender = JSON.parse(formData.is_male) ? 'male' : 'female';
+		const birth_year = formData.birth_year;
+		const api_medic_token =
+			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY3MDIyMTUsIm5iZiI6MTY5NjY5NTAxNX0.11uFUlWB1jmSHZundpKGiF0UZ756FDVW2EqepJQAr3g';
+		const url = `https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=${symptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${api_medic_token}&format=json&language=en-gb`;
+		const response = await fetch(url);
+		if (response.ok) {
+			const data = await response.json();
+			console.log(data);
+
+			setFormData({
+				exam_date: dayjs(),
+				first_name: '',
+				last_name: '',
+				birth_year: '',
+				is_male: '',
+				symptom_1: '',
+				symptom_2: '',
+				diagnosis: '',
+			});
+			handleClose();
+		}
 	};
 
 	useEffect(() => {
@@ -171,13 +194,13 @@ export default function ButtonAppBar() {
 									sx={{
 										'& > :not(style)': { m: 1, width: '35ch' },
 									}}
-									noValidate
 									autoComplete="off"
-									onSubmit={submitHandlerDiangosis}
+									onSubmit={submitHandlerDiagnosis}
 								>
 									<LocalizationProvider dateAdapter={AdapterDayjs}>
 										<DemoContainer components={['DateField']}>
 											<DateField
+												required
 												fullWidth
 												label="Examination Date"
 												name="exam_date"
@@ -187,6 +210,7 @@ export default function ButtonAppBar() {
 										</DemoContainer>
 									</LocalizationProvider>
 									<TextField
+										required
 										id="outlined-basic"
 										label="First Name"
 										variant="outlined"
@@ -196,6 +220,7 @@ export default function ButtonAppBar() {
 										onChange={handleFormChange}
 									/>
 									<TextField
+										required
 										id="outlined-basic"
 										label="Last Name"
 										variant="outlined"
@@ -205,6 +230,7 @@ export default function ButtonAppBar() {
 										onChange={handleFormChange}
 									/>
 									<TextField
+										required
 										id="outlined-basic"
 										type="number"
 										max="2500"
@@ -217,7 +243,7 @@ export default function ButtonAppBar() {
 									/>
 									<FormControl sx={{ pl: 1.5 }}>
 										<FormLabel id="demo-row-radio-buttons-group-label">
-											Gender
+											Gender *
 										</FormLabel>
 										<RadioGroup
 											row
@@ -225,13 +251,13 @@ export default function ButtonAppBar() {
 											name="is_male"
 										>
 											<FormControlLabel
-												value="True"
+												value={true}
 												control={<Radio />}
 												label="Male"
 												onChange={handleFormChange}
 											/>
 											<FormControlLabel
-												value="False"
+												value={false}
 												control={<Radio />}
 												label="Female"
 												onChange={handleFormChange}
@@ -239,44 +265,41 @@ export default function ButtonAppBar() {
 										</RadioGroup>
 									</FormControl>
 									<FormControl fullWidth>
-										<InputLabel id="demo-simple-select-label">
-											Select Primary Symptom
-										</InputLabel>
-										<Select
+										<TextField
+											required={true}
+											select
 											labelId="demo-simple-select-label"
 											id="demo-simple-select"
-											label="Symptom_1"
+											label="Primary Symptom"
 											name="symptom_1"
 											value={formData.symptom_1}
 											onChange={handleFormChange}
 										>
 											{symptoms &&
 												symptoms.map((symptom) => (
-													<MenuItem value={symptom.Name} id={symptom.ID}>
+													<MenuItem value={symptom.ID} id={symptom.ID}>
 														{symptom.Name}
 													</MenuItem>
 												))}
-										</Select>
+										</TextField>
 									</FormControl>
 									<FormControl fullWidth>
-										<InputLabel id="demo-simple-select-label">
-											Select Symptom (Optional)
-										</InputLabel>
-										<Select
+										<TextField
+											select
 											labelId="demo-simple-select-label"
+											label="Secondary Symptom (Optional)"
 											id="demo-simple-select"
-											label="Symptom_2"
 											name="symptom_2"
 											value={formData.symptom_2}
 											onChange={handleFormChange}
 										>
 											{symptoms &&
 												symptoms.map((symptom) => (
-													<MenuItem value={symptom.Name} id={symptom.ID}>
+													<MenuItem value={symptom.ID} id={symptom.ID}>
 														{symptom.Name}
 													</MenuItem>
 												))}
-										</Select>
+										</TextField>
 									</FormControl>
 									<Box sx={{ pt: 1, justifyContent: 'flex-end' }}>
 										<Button variant="outlined" sx={{ mr: 2 }}>
