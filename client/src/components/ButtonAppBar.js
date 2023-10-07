@@ -84,18 +84,50 @@ export default function ButtonAppBar() {
 	const [open, setOpen] = React.useState(false);
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
+	const [formData, setFormData] = useState({
+		exam_date: dayjs(),
+		first_name: '',
+		last_name: '',
+		birth_year: '',
+		is_male: 'True',
+		symptom_1: '',
+		symptom_2: '',
+		diagnosis: '',
+	});
 
-	const fetchRecords = async () => {
+	const fetchSymptoms = async () => {
 		const url =
-			'https://sandbox-healthservice.priaid.ch/symptoms?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY2ODU0MjYsIm5iZiI6MTY5NjY3ODIyNn0.vLqMZEJaDceGJkb3AW7_JtzHg3Vi1ANgmucEBBLE_2I&format=json&language=en-gb';
+			'https://sandbox-healthservice.priaid.ch/symptoms?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY2OTc4MzIsIm5iZiI6MTY5NjY5MDYzMn0.jAMC5vF8aoxqGpB1CUQGP7dTx0BQK_CJ3vWN4rQnZ_w&format=json&language=en-gb';
 		const response = await fetch(url);
 		if (response.ok) {
 			const data = await response.json();
 			setSymptoms(data);
 		}
 	};
+
+	// const fetchDiagnosis = async () => {
+	// 	const url =
+	// 		'https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=[139]&gender=male&year_of_birth=1973&token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY2OTQxNjMsIm5iZiI6MTY5NjY4Njk2M30.MtTE1-rT1dQbF7jlGr8nnFLusJs3HrmO5k5vLWQcxgc&format=json&language=en-gb';
+	// 	const response = await fetch(url);
+	// 	if (response.ok) {
+	// 		const data = await response.json();
+	// 		setSymptoms(data);
+	// 	}
+	// };
+
+	const handleFormChange = async (e) => {
+		const name = e.target.name;
+		const value = e.target.value;
+		setFormData({ ...formData, [name]: value });
+	};
+
+	const submitHandlerDiangosis = (e) => {
+		console.log(formData);
+		e.preventDefault();
+	};
+
 	useEffect(() => {
-		fetchRecords();
+		fetchSymptoms();
 	}, []);
 
 	return (
@@ -141,13 +173,16 @@ export default function ButtonAppBar() {
 									}}
 									noValidate
 									autoComplete="off"
+									onSubmit={submitHandlerDiangosis}
 								>
 									<LocalizationProvider dateAdapter={AdapterDayjs}>
 										<DemoContainer components={['DateField']}>
 											<DateField
 												fullWidth
 												label="Examination Date"
+												name="exam_date"
 												size="small"
+												value={formData.exam_date}
 											/>
 										</DemoContainer>
 									</LocalizationProvider>
@@ -156,18 +191,29 @@ export default function ButtonAppBar() {
 										label="First Name"
 										variant="outlined"
 										size="small"
+										name="first_name"
+										value={formData.first_name}
+										onChange={handleFormChange}
 									/>
 									<TextField
 										id="outlined-basic"
 										label="Last Name"
 										variant="outlined"
 										size="small"
+										name="last_name"
+										value={formData.last_name}
+										onChange={handleFormChange}
 									/>
 									<TextField
 										id="outlined-basic"
+										type="number"
+										max="2500"
 										label="Birth Year"
 										variant="outlined"
 										size="small"
+										name="birth_year"
+										value={formData.birth_year}
+										onChange={handleFormChange}
 									/>
 									<FormControl sx={{ pl: 1.5 }}>
 										<FormLabel id="demo-row-radio-buttons-group-label">
@@ -176,17 +222,19 @@ export default function ButtonAppBar() {
 										<RadioGroup
 											row
 											aria-labelledby="demo-row-radio-buttons-group-label"
-											name="row-radio-buttons-group"
+											name="is_male"
 										>
 											<FormControlLabel
-												value="Male"
+												value="True"
 												control={<Radio />}
 												label="Male"
+												onChange={handleFormChange}
 											/>
 											<FormControlLabel
-												value="Female"
+												value="False"
 												control={<Radio />}
 												label="Female"
+												onChange={handleFormChange}
 											/>
 										</RadioGroup>
 									</FormControl>
@@ -197,14 +245,16 @@ export default function ButtonAppBar() {
 										<Select
 											labelId="demo-simple-select-label"
 											id="demo-simple-select"
-											// value={age}
-											label="Age"
-											// onChange={handleChange}
-											// size="small"
+											label="Symptom_1"
+											name="symptom_1"
+											value={formData.symptom_1}
+											onChange={handleFormChange}
 										>
 											{symptoms &&
 												symptoms.map((symptom) => (
-													<MenuItem value={10}>{symptom.Name}</MenuItem>
+													<MenuItem value={symptom.Name} id={symptom.ID}>
+														{symptom.Name}
+													</MenuItem>
 												))}
 										</Select>
 									</FormControl>
@@ -215,29 +265,26 @@ export default function ButtonAppBar() {
 										<Select
 											labelId="demo-simple-select-label"
 											id="demo-simple-select"
-											// value={age}
-											label="Age"
-											// onChange={handleChange}
-											// size="small"
+											label="Symptom_2"
+											name="symptom_2"
+											value={formData.symptom_2}
+											onChange={handleFormChange}
 										>
 											{symptoms &&
 												symptoms.map((symptom) => (
-													<MenuItem value={10}>{symptom.Name}</MenuItem>
+													<MenuItem value={symptom.Name} id={symptom.ID}>
+														{symptom.Name}
+													</MenuItem>
 												))}
 										</Select>
 									</FormControl>
-									{/* <TextField
-										id="outlined-basic"
-										label="Examination Date"
-										variant="outlined"
-										size="small"
-									/> */}
-
 									<Box sx={{ pt: 1, justifyContent: 'flex-end' }}>
 										<Button variant="outlined" sx={{ mr: 2 }}>
 											Reset
 										</Button>
-										<Button variant="contained">Diagnose</Button>
+										<Button variant="contained" type="submit">
+											Diagnose
+										</Button>
 									</Box>
 								</Box>
 							</Box>
