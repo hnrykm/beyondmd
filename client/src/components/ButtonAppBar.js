@@ -296,7 +296,6 @@ export default function ButtonAppBar({ setSubmission }) {
 										<TextField
 											required={true}
 											select
-											labelId="demo-simple-select-label"
 											id="demo-simple-select"
 											label="Primary Symptom"
 											name="symptom_1"
@@ -307,7 +306,7 @@ export default function ButtonAppBar({ setSubmission }) {
 												symptoms.map((symptom) => (
 													<MenuItem
 														value={symptom.ID}
-														id={symptom.ID}
+														key={symptom.ID}
 														onClick={() => setSymptom1(symptom.Name)}
 													>
 														{symptom.Name}
@@ -318,7 +317,6 @@ export default function ButtonAppBar({ setSubmission }) {
 									<FormControl fullWidth>
 										<TextField
 											select
-											labelId="demo-simple-select-label"
 											label="Secondary Symptom (Optional)"
 											id="demo-simple-select"
 											name="symptom_2"
@@ -329,7 +327,7 @@ export default function ButtonAppBar({ setSubmission }) {
 												symptoms.map((symptom) => (
 													<MenuItem
 														value={symptom.ID}
-														id={symptom.ID}
+														key={symptom.ID}
 														onClick={() => setSymptom2(symptom.Name)}
 													>
 														{symptom.Name}

@@ -30,7 +30,7 @@ const MainPage = ({ submission }) => {
 	return (
 		<div>
 			<Box sx={{ justifyContent: 'center' }}>
-				<Box item sx={3}>
+				<Box>
 					<TableContainer component={Paper}>
 						<Table aria-label="simple table">
 							<TableHead>
