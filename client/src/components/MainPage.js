@@ -125,6 +125,26 @@ const MainPage = ({ submission, symptoms }) => {
 		});
 	};
 
+	const [openDetails, setOpenDetails] = useState(false);
+	const handleCloseDetails = () => setOpenDetails(false);
+	const handleOpenDetails = (record) => {
+		setOpenDetails(true);
+		setSymptom1(record.symptom_1);
+		setSymptom2(record.symptom_2);
+		console.log(record.diagnosis.split(','));
+		setFormData({
+			id: record.id,
+			exam_date: dayjs(record.exam_date),
+			first_name: record.first_name,
+			last_name: record.last_name,
+			birth_year: record.birth_year,
+			is_male: record.is_male === true ? true : false,
+			symptom_1: symptom1 ? symptom1.ID : '',
+			symptom_2: symptom2 ? symptom2.ID : '',
+			diagnosis: record.diagnosis.split(','),
+		});
+	};
+
 	const fetchRecords = async () => {
 		const url = 'http://localhost:8000/api/records/';
 		const response = await fetch(url);
@@ -241,7 +261,11 @@ const MainPage = ({ submission, symptoms }) => {
 											<TableCell>{record.first_name}</TableCell>
 											<TableCell>{record.diagnosis}</TableCell>
 											<TableCell>
-												<Button variant="outlined" size="small">
+												<Button
+													variant="outlined"
+													size="small"
+													onClick={() => handleOpenDetails(record)}
+												>
 													View Details
 												</Button>
 											</TableCell>
@@ -430,6 +454,54 @@ const MainPage = ({ submission, symptoms }) => {
 								</Button>
 							</Box>
 						</Box>
+					</Box>
+				</Fade>
+			</Modal>
+			<Modal
+				aria-labelledby="spring-modal-title"
+				aria-describedby="spring-modal-description"
+				open={openDetails}
+				onClose={handleCloseDetails}
+				closeAfterTransition
+				slots={{ backdrop: Backdrop }}
+				slotProps={{
+					backdrop: {
+						TransitionComponent: Fade,
+					},
+				}}
+				sx={{ m: 6 }}
+			>
+				<Fade in={openDetails}>
+					<Box sx={style}>
+						<Typography
+							id="spring-modal-title"
+							variant="h4"
+							component="h4"
+							sx={{ mb: 2 }}
+						>
+							Details
+						</Typography>
+						<p>
+							{formData.first_name} {formData.last_name}
+						</p>
+						<p>
+							{formData.is_male === true ? 'Male' : 'Female'}, Born{' '}
+							{formData.birth_year} (Age {dayjs().year() - formData.birth_year})
+						</p>
+						<p>Examined on {dayjs(formData.exam_date).format('MM/DD/YYYY')}</p>
+						Symptoms include:
+						<ul>
+							<li>{symptom1}</li>
+							{symptom2 ? <li>{symptom2}</li> : ''}
+						</ul>
+						<p>
+							Possible Diagnoses:
+							<br />
+							<ul>
+								{formData.diagnosis &&
+									formData.diagnosis.map((d) => <li>{d}</li>)}
+							</ul>
+						</p>
 					</Box>
 				</Fade>
 			</Modal>
