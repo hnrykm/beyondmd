@@ -12,7 +12,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { red } from '@mui/material/colors';
 
-const MainPage = () => {
+const MainPage = ({ submission }) => {
 	const [records, setRecords] = useState([]);
 
 	const fetchRecords = async () => {
@@ -25,7 +25,7 @@ const MainPage = () => {
 	};
 	useEffect(() => {
 		fetchRecords();
-	}, []);
+	}, [submission]);
 
 	return (
 		<div>

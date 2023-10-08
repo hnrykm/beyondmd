@@ -16,7 +16,6 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-// import SingleRecordForm from './SingleRecordForm';
 
 import MenuItem from '@mui/material/MenuItem';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
@@ -78,7 +77,7 @@ const style = {
 	p: 4,
 };
 
-export default function ButtonAppBar() {
+export default function ButtonAppBar({ setSubmission }) {
 	const [symptoms, setSymptoms] = useState([]);
 	const [symptom1, setSymptom1] = useState('');
 	const [symptom2, setSymptom2] = useState('');
@@ -88,12 +87,8 @@ export default function ButtonAppBar() {
 	const handleClose = () => setOpen(false);
 
 	const [openSingle, setOpenSingle] = useState(false);
-	const handleOpenSingle = () => setOpenSingle(true);
+	// const handleOpenSingle = () => setOpenSingle(true);
 	const handleCloseSingle = () => setOpenSingle(false);
-
-	const [openDiagnosis, setOpenDiagnosis] = useState(false);
-	const handleOpenDiagnosis = () => setOpenDiagnosis(true);
-	const handleCloseDiagnosis = () => setOpenDiagnosis(false);
 
 	const [formData, setFormData] = useState({
 		exam_date: dayjs(),
@@ -164,7 +159,6 @@ export default function ButtonAppBar() {
 			};
 			const postResponse = await fetch(recordUrl, fetchConfig);
 			if (postResponse.ok) {
-				// const success = true;
 				setFormData({
 					exam_date: dayjs(),
 					first_name: '',
@@ -176,7 +170,7 @@ export default function ButtonAppBar() {
 					diagnosis: '',
 				});
 			}
-
+			setSubmission(postData);
 			handleClose();
 		}
 	};
