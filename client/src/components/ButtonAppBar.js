@@ -120,7 +120,6 @@ export default function ButtonAppBar({ setSubmission }) {
 
 	const submitHandlerDiagnosis = async (e) => {
 		e.preventDefault();
-		console.log(formData);
 		const symptoms = formData.symptom_2
 			? `[${formData.symptom_1},${formData.symptom_2}]`
 			: `[${formData.symptom_1}]`;
@@ -132,8 +131,6 @@ export default function ButtonAppBar({ setSubmission }) {
 		const response = await fetch(url);
 		if (response.ok) {
 			const data = await response.json();
-			console.log('returned data', data);
-			console.log('Here are the two symptom names:', symptom1, symptom2);
 			const diagnoses = data.map((diagnosis) => diagnosis.Issue.ProfName);
 
 			const postData = {};
@@ -147,7 +144,6 @@ export default function ButtonAppBar({ setSubmission }) {
 			postData.symptom_1 = symptom1;
 			postData.symptom_2 = symptom2;
 			postData.diagnosis = diagnoses.join(', ');
-			console.log(JSON.stringify(postData));
 
 			const recordUrl = 'http://localhost:8000/api/records/';
 			const fetchConfig = {

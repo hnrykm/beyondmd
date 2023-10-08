@@ -23,6 +23,27 @@ const MainPage = ({ submission }) => {
 			setRecords(data.records);
 		}
 	};
+
+	const handleDelete = async (id) => {
+		const userConfirmed = window.confirm(
+			'Are you sure you want to delete this record?'
+		);
+		if (userConfirmed) {
+			const url = `http://localhost:8000/api/records/${id}`;
+			const fetchConfig = {
+				method: 'delete',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			};
+			const response = await fetch(url, fetchConfig);
+			if (response.ok) {
+				fetchRecords();
+				console.log('Delete successful');
+			}
+		}
+	};
+
 	useEffect(() => {
 		fetchRecords();
 	}, [submission]);
@@ -61,18 +82,26 @@ const MainPage = ({ submission }) => {
 												<Typography color="primary" sx={{ display: 'inline' }}>
 													Edit
 												</Typography>
-												<SvgIcon>
-													<DeleteOutlineOutlinedIcon sx={{ color: red[500] }} />
-												</SvgIcon>
-												<Typography
-													sx={{
-														color: red[500],
-														display: 'inline',
-														alignItems: 'center',
+												<Button
+													onClick={() => {
+														handleDelete(record.id);
 													}}
 												>
-													Delete
-												</Typography>
+													<SvgIcon>
+														<DeleteOutlineOutlinedIcon
+															sx={{ color: red[500] }}
+														/>
+													</SvgIcon>
+													<Typography
+														sx={{
+															color: red[500],
+															display: 'inline',
+															alignItems: 'center',
+														}}
+													>
+														Delete
+													</Typography>
+												</Button>
 											</TableCell>
 										</TableRow>
 									))}
