@@ -48,7 +48,7 @@ const MainPage = () => {
 											<TableCell>{record.exam_date}</TableCell>
 											<TableCell>{record.last_name}</TableCell>
 											<TableCell>{record.first_name}</TableCell>
-											<TableCell>{record.diagnosis_1}</TableCell>
+											<TableCell>{record.diagnosis}</TableCell>
 											<TableCell>
 												<Button variant="outlined" size="small">
 													View Details

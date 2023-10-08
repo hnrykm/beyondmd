@@ -106,11 +106,9 @@ export default function ButtonAppBar() {
 		diagnosis: '',
 	});
 
-	const [results, setResults] = useState({});
-
 	const fetchSymptoms = async () => {
 		const api_medic_token =
-			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY3MDY2ODgsIm5iZiI6MTY5NjY5OTQ4OH0.j0bpdSvbQNiRJ4bt2fLKZNFCajYN3YMpzNsopfhFr_I';
+			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY3NjYwNTUsIm5iZiI6MTY5Njc1ODg1NX0.PI1euQZd_UOgQc-qCny_zM5_YKNhHKXiUEFu9MM9RRA';
 		const url = `https://sandbox-healthservice.priaid.ch/symptoms?token=${api_medic_token}&format=json&language=en-gb`;
 		const response = await fetch(url);
 		if (response.ok) {
@@ -134,7 +132,7 @@ export default function ButtonAppBar() {
 		const gender = JSON.parse(formData.is_male) ? 'male' : 'female';
 		const birth_year = formData.birth_year;
 		const api_medic_token =
-			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY3MTE0NjYsIm5iZiI6MTY5NjcwNDI2Nn0.0qpuCi92CMscxRJ9-UEY7xcOVnpxIS5OMgjmtB9lWGY';
+			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY3NjYwMzEsIm5iZiI6MTY5Njc1ODgzMX0.jC9yCAV5l60Vi5Ortshk_H8bazZwKapa661U-MxVmyw';
 		const url = `https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=${symptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${api_medic_token}&format=json&language=en-gb`;
 		const response = await fetch(url);
 		if (response.ok) {
@@ -143,30 +141,43 @@ export default function ButtonAppBar() {
 			console.log('Here are the two symptom names:', symptom1, symptom2);
 			const diagnoses = data.map((diagnosis) => diagnosis.Issue.ProfName);
 
-			setResults({
-				exam_date: dayjs(formData.exam_date),
-				first_name: formData.first_name,
-				last_name: formData.last_name,
-				birth_year: formData.birth_year,
-				is_male: formData.is_male,
-				symptom_1: symptom1,
-				symptom_2: symptom2,
-				diagnosis: diagnoses,
-			});
-			results && console.log('returned diagnoses', results);
-			setFormData({
-				exam_date: dayjs(),
-				first_name: '',
-				last_name: '',
-				birth_year: '',
-				is_male: '',
-				symptom_1: '',
-				symptom_2: '',
-				diagnosis: '',
-			});
+			const postData = {};
+			postData.exam_date = dayjs(formData.exam_date)
+				.format('YYYY-MM-DD')
+				.toString();
+			postData.first_name = formData.first_name;
+			postData.last_name = formData.last_name;
+			postData.birth_year = Number(formData.birth_year);
+			postData.is_male = formData.is_male === 'true' ? true : false;
+			postData.symptom_1 = symptom1;
+			postData.symptom_2 = symptom2;
+			postData.diagnosis = diagnoses.join(', ');
+			console.log(JSON.stringify(postData));
+
+			const recordUrl = 'http://localhost:8000/api/records/';
+			const fetchConfig = {
+				method: 'post',
+				body: JSON.stringify(postData),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			};
+			const postResponse = await fetch(recordUrl, fetchConfig);
+			if (postResponse.ok) {
+				// const success = true;
+				setFormData({
+					exam_date: dayjs(),
+					first_name: '',
+					last_name: '',
+					birth_year: '',
+					is_male: '',
+					symptom_1: '',
+					symptom_2: '',
+					diagnosis: '',
+				});
+			}
 
 			handleClose();
-			handleOpenDiagnosis();
 		}
 	};
 
@@ -360,7 +371,7 @@ export default function ButtonAppBar() {
 						</Fade>
 					</Modal>
 
-					{/* Diagnosis Loaded Modal */}
+					{/* Diagnosis Loaded Modal
 					<Modal
 						aria-labelledby="spring-modal-title"
 						aria-describedby="spring-modal-description"
@@ -403,7 +414,7 @@ export default function ButtonAppBar() {
 
 					<Button color="inherit" onClick={handleOpenSingle}>
 						Add Multiple Records
-					</Button>
+					</Button> */}
 
 					{/* Add Multiple Records Modal */}
 					<Modal
