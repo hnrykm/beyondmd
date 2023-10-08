@@ -6,16 +6,27 @@ import { CssBaseline } from '@mui/material';
 
 const App = () => {
 	const [submission, setSubmission] = useState({});
+	const [symptoms, setSymptoms] = useState([]);
 
 	return (
 		<div>
 			<CssBaseline>
-				<Nav setSubmission={setSubmission} />
+				<Nav
+					setSubmission={setSubmission}
+					symptoms={symptoms}
+					setSymptoms={setSymptoms}
+				/>
 				<Routes>
 					<Route
 						exact
 						path="/"
-						element={<MainPage submission={submission} />}
+						element={
+							<MainPage
+								submission={submission}
+								symptoms={symptoms}
+								setSymptoms={setSymptoms}
+							/>
+						}
 					/>
 				</Routes>
 			</CssBaseline>
