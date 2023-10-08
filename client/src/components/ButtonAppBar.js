@@ -103,7 +103,7 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 
 	const fetchSymptoms = async () => {
 		const api_medic_token =
-			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY3ODA3MDYsIm5iZiI6MTY5Njc3MzUwNn0.inABjNTzhetzo-9nqpzASlUNzftc7i-NQvf7kBUpjmo';
+			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY3ODc1MzksIm5iZiI6MTY5Njc4MDMzOX0.GpvUdcSCx44ZN4Wo-6_sgE4_GQMTpeZjp_ggigMkpS8';
 		const url = `https://sandbox-healthservice.priaid.ch/symptoms?token=${api_medic_token}&format=json&language=en-gb`;
 		const response = await fetch(url);
 		if (response.ok) {
@@ -126,7 +126,7 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 		const gender = JSON.parse(formData.is_male) ? 'male' : 'female';
 		const birth_year = formData.birth_year;
 		const api_medic_token =
-			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY3ODA2NzgsIm5iZiI6MTY5Njc3MzQ3OH0.JZxhkWi3eclL4xmiT0FcPfHOUxoomHorJv2Ta0_-Iyg';
+			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY3ODc1NjcsIm5iZiI6MTY5Njc4MDM2N30.I_opuiUKUg4HppXAUUb8RG6liiEN4CrddPZuVvPdGqg';
 		const url = `https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=${symptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${api_medic_token}&format=json&language=en-gb`;
 		const response = await fetch(url);
 		if (response.ok) {
@@ -327,6 +327,7 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 											value={formData.symptom_2}
 											onChange={handleFormChange}
 										>
+											<MenuItem value="">Secondary Symptom (Optional)</MenuItem>
 											{symptoms &&
 												symptoms.map((symptom) => (
 													<MenuItem
@@ -366,51 +367,6 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 							</Box>
 						</Fade>
 					</Modal>
-
-					{/* Diagnosis Loaded Modal
-					<Modal
-						aria-labelledby="spring-modal-title"
-						aria-describedby="spring-modal-description"
-						open={openDiagnosis}
-						onClose={handleCloseDiagnosis}
-						closeAfterTransition
-						slots={{ backdrop: Backdrop }}
-						slotProps={{
-							backdrop: {
-								TransitionComponent: Fade,
-							},
-						}}
-						sx={{ m: 6 }}
-					>
-						<Fade in={openDiagnosis}>
-							<Box sx={style}>
-								<Typography
-									id="spring-modal-title"
-									variant="h6"
-									component="h6"
-									sx={{ mb: 2 }}
-									justifyContent="center"
-								>
-									Returned Diagnosis
-								</Typography>
-								<Typography variant="h2">
-									{results.first_name} {results.last_name}
-								</Typography>
-								{results.is_male ? 'Male' : 'Female'}, Born{' '}
-								{dayjs(results.birth_year).format('DD/MM/YYY')} (Age{' '}
-								{dayjs().year() - results.birth_year}) Examined on{' '}
-								{dayjs(results.exam_date)}
-								<p>Symptoms include:</p>
-								{{ symptom2 } ? `${symptom1}, ${symptom2}` : `${symptom1}`}
-								<p>Possible Diagnoses:</p>
-								{results.diagnoses}
-							</Box>
-						</Fade>
-					</Modal>
-
-					<Button color="inherit" onClick={handleOpenSingle}>
-						Add Multiple Records
-					</Button> */}
 
 					{/* Add Multiple Records Modal */}
 					<Modal

@@ -85,8 +85,11 @@ const style = {
 
 const MainPage = ({ submission, symptoms }) => {
 	const [records, setRecords] = useState([]);
+	const [symptom1, setSymptom1] = useState('');
+	const [symptom2, setSymptom2] = useState('');
 
 	const [formData, setFormData] = useState({
+		id: 0,
 		exam_date: dayjs(),
 		first_name: '',
 		last_name: '',
@@ -101,6 +104,9 @@ const MainPage = ({ submission, symptoms }) => {
 	const handleClose = () => setOpen(false);
 	const handleOpen = (record) => {
 		setOpen(true);
+		setSymptom1(record.symptom_1);
+		setSymptom2(record.symptom_2);
+		console.log(record);
 		const symptom1 = symptoms.find(
 			(symptom) => symptom.Name === record.symptom_1
 		);
@@ -108,12 +114,13 @@ const MainPage = ({ submission, symptoms }) => {
 			(symptom) => symptom.Name === record.symptom_2
 		);
 		setFormData({
+			id: record.id,
 			exam_date: dayjs(record.exam_date),
 			first_name: record.first_name,
 			last_name: record.last_name,
 			birth_year: record.birth_year,
 			is_male: record.is_male === true ? true : false,
-			symptom_1: symptom1.ID,
+			symptom_1: symptom1 ? symptom1.ID : '',
 			symptom_2: symptom2 ? symptom2.ID : '',
 		});
 	};
@@ -131,8 +138,62 @@ const MainPage = ({ submission, symptoms }) => {
 		const name = e.target.name;
 		const value = e.target.value;
 		setFormData({ ...formData, [name]: value });
+		console.log(name, value);
 	};
 
+	const handleUpdate = async (e) => {
+		e.preventDefault();
+		const symptoms = formData.symptom_2
+			? `[${formData.symptom_1},${formData.symptom_2}]`
+			: `[${formData.symptom_1}]`;
+		const gender = JSON.parse(formData.is_male) ? 'male' : 'female';
+		const birth_year = formData.birth_year;
+		const api_medic_token =
+			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY3ODc1MzksIm5iZiI6MTY5Njc4MDMzOX0.GpvUdcSCx44ZN4Wo-6_sgE4_GQMTpeZjp_ggigMkpS8';
+		const url = `https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=${symptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${api_medic_token}&format=json&language=en-gb`;
+		const response = await fetch(url);
+		if (response.ok) {
+			const data = await response.json();
+			const diagnoses = data.map((diagnosis) => diagnosis.Issue.ProfName);
+
+			const postData = {};
+			postData.exam_date = dayjs(formData.exam_date)
+				.format('YYYY-MM-DD')
+				.toString();
+			postData.first_name = formData.first_name;
+			postData.last_name = formData.last_name;
+			postData.birth_year = Number(formData.birth_year);
+			postData.is_male = formData.is_male === 'true' ? true : false;
+			postData.symptom_1 = symptom1;
+			postData.symptom_2 = symptom2;
+			postData.diagnosis = diagnoses.join(', ');
+			console.log(postData);
+			const recordUrl = `http://localhost:8000/api/records/${formData.id}`;
+			const fetchConfig = {
+				method: 'put',
+				body: JSON.stringify(postData),
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			};
+			const postResponse = await fetch(recordUrl, fetchConfig);
+			if (postResponse.ok) {
+				setFormData({
+					id: 0,
+					exam_date: dayjs(),
+					first_name: '',
+					last_name: '',
+					birth_year: '',
+					is_male: '',
+					symptom_1: '',
+					symptom_2: '',
+					diagnosis: '',
+				});
+			}
+			fetchRecords();
+			handleClose();
+		}
+	};
 	const handleDelete = async (id) => {
 		const userConfirmed = window.confirm(
 			'Are you sure you want to delete this record?'
@@ -240,7 +301,7 @@ const MainPage = ({ submission, symptoms }) => {
 								'& > :not(style)': { m: 1, width: '35ch' },
 							}}
 							autoComplete="off"
-							// onSubmit={submitHandlerDiagnosis}
+							onSubmit={handleUpdate}
 						>
 							<LocalizationProvider dateAdapter={AdapterDayjs}>
 								<DemoContainer components={['DateField']}>
@@ -329,7 +390,11 @@ const MainPage = ({ submission, symptoms }) => {
 								>
 									{symptoms &&
 										symptoms.map((symptom) => (
-											<MenuItem value={symptom.ID} key={symptom.ID}>
+											<MenuItem
+												value={symptom.ID}
+												key={symptom.ID}
+												onClick={() => setSymptom1(symptom.Name)}
+											>
 												{symptom.Name}
 											</MenuItem>
 										))}
@@ -344,9 +409,16 @@ const MainPage = ({ submission, symptoms }) => {
 									value={formData.symptom_2}
 									onChange={handleFormChange}
 								>
+									<MenuItem value="" onClick={() => setSymptom2('')}>
+										Secondary Symptom (Optional)
+									</MenuItem>
 									{symptoms &&
 										symptoms.map((symptom) => (
-											<MenuItem value={symptom.ID} key={symptom.ID}>
+											<MenuItem
+												value={symptom.ID}
+												key={symptom.ID}
+												onClick={() => setSymptom2(symptom.Name)}
+											>
 												{symptom.Name}
 											</MenuItem>
 										))}
