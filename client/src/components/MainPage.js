@@ -169,7 +169,7 @@ const MainPage = ({ submission, symptoms }) => {
 		const gender = JSON.parse(formData.is_male) ? 'male' : 'female';
 		const birth_year = formData.birth_year;
 		const api_medic_token =
-			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY3ODc1MzksIm5iZiI6MTY5Njc4MDMzOX0.GpvUdcSCx44ZN4Wo-6_sgE4_GQMTpeZjp_ggigMkpS8';
+			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY4NjU0MzMsIm5iZiI6MTY5Njg1ODIzM30.KTCjz5YU9aHiVByqM6umTx9f_8iJ6tjaxtUa_fXAd6M';
 		const url = `https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=${symptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${api_medic_token}&format=json&language=en-gb`;
 		const response = await fetch(url);
 		if (response.ok) {
@@ -250,6 +250,7 @@ const MainPage = ({ submission, symptoms }) => {
 									<TableCell>Last Name</TableCell>
 									<TableCell>First Name</TableCell>
 									<TableCell>Possible Diagnosis</TableCell>
+									<TableCell>Actions</TableCell>
 								</TableRow>
 							</TableHead>
 							<TableBody>
@@ -264,18 +265,16 @@ const MainPage = ({ submission, symptoms }) => {
 												<Button
 													variant="outlined"
 													size="small"
+													sx={{ mr: 3 }}
 													onClick={() => handleOpenDetails(record)}
 												>
 													View Details
 												</Button>
-											</TableCell>
-											<TableCell>
 												<Button onClick={() => handleOpen(record)}>
 													<SvgIcon>
 														<EditOutlinedIcon color="primary" />
 													</SvgIcon>
 												</Button>
-
 												<Button
 													onClick={() => {
 														handleDelete(record.id);
@@ -494,14 +493,12 @@ const MainPage = ({ submission, symptoms }) => {
 							<li>{symptom1}</li>
 							{symptom2 ? <li>{symptom2}</li> : ''}
 						</ul>
-						<p>
-							Possible Diagnoses:
-							<br />
-							<ul>
-								{formData.diagnosis &&
-									formData.diagnosis.map((d) => <li>{d}</li>)}
-							</ul>
-						</p>
+						Possible Diagnoses:
+						<br />
+						<ul>
+							{formData.diagnosis &&
+								formData.diagnosis.map((d, id) => <li key="id">{d}</li>)}
+						</ul>
 					</Box>
 				</Fade>
 			</Modal>

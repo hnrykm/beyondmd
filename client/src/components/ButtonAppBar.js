@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, CSSProperties } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
+// import TextField from '@mui/material/TextField';
 
 import PropTypes from 'prop-types';
 import Backdrop from '@mui/material/Backdrop';
@@ -11,18 +11,99 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import { useSpring, animated } from '@react-spring/web';
 
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
+// import Radio from '@mui/material/Radio';
+// import RadioGroup from '@mui/material/RadioGroup';
+// import FormControlLabel from '@mui/material/FormControlLabel';
+// import FormControl from '@mui/material/FormControl';
+// import FormLabel from '@mui/material/FormLabel';
 
-import MenuItem from '@mui/material/MenuItem';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateField } from '@mui/x-date-pickers/DateField';
+// import MenuItem from '@mui/material/MenuItem';
+// import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+// import { DateField } from '@mui/x-date-pickers/DateField';
 import dayjs from 'dayjs';
+import AddSingleModal from './AddSingleModal';
+
+// PapaParse
+import {
+	useCSVReader,
+	lightenDarkenColor,
+	formatFileSize,
+} from 'react-papaparse';
+
+const GREY = '#CCC';
+const GREY_LIGHT = 'rgba(255, 255, 255, 0.4)';
+const DEFAULT_REMOVE_HOVER_COLOR = '#A01919';
+const REMOVE_HOVER_COLOR_LIGHT = lightenDarkenColor(
+	DEFAULT_REMOVE_HOVER_COLOR,
+	40
+);
+const GREY_DIM = '#686868';
+
+const styles = {
+	zone: {
+		alignItems: 'center',
+		border: `2px dashed ${GREY}`,
+		borderRadius: 20,
+		display: 'flex',
+		flexDirection: 'column',
+		height: '100%',
+		justifyContent: 'center',
+		padding: 20,
+	},
+	file: {
+		background: `linear-gradient(to bottom, ${GREY_LIGHT}, #DDD)`,
+		borderRadius: 20,
+		display: 'flex',
+		height: 120,
+		width: 120,
+		position: 'relative',
+		zIndex: 10,
+		flexDirection: 'column',
+		justifyContent: 'center',
+	},
+	info: {
+		alignItems: 'center',
+		display: 'flex',
+		flexDirection: 'column',
+		paddingLeft: 10,
+		paddingRight: 10,
+	},
+	size: {
+		backgroundColor: GREY_LIGHT,
+		borderRadius: 3,
+		marginBottom: '0.5em',
+		justifyContent: 'center',
+		display: 'flex',
+	},
+	name: {
+		backgroundColor: GREY_LIGHT,
+		borderRadius: 3,
+		fontSize: 12,
+		marginBottom: '0.5em',
+	},
+	progressBar: {
+		bottom: 14,
+		position: 'absolute',
+		width: '100%',
+		paddingLeft: 10,
+		paddingRight: 10,
+	},
+	zoneHover: {
+		borderColor: GREY_DIM,
+	},
+	default: {
+		borderColor: GREY,
+	},
+	remove: {
+		height: 23,
+		position: 'absolute',
+		right: 6,
+		top: 6,
+		width: 23,
+	},
+};
 
 const Fade = React.forwardRef(function Fade(props, ref) {
 	const {
@@ -78,6 +159,11 @@ const style = {
 };
 
 export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
+	const APIMEDIC_API_KEY =
+		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY4NzM2ODMsIm5iZiI6MTY5Njg2NjQ4M30.gL57g6Syhr1lda-dx1TRN2nV6sBLfGN21DERnahJ-EE';
+	const API_MEDIC_API_KEY_DIAGNOSIS =
+		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY4NzM3MTcsIm5iZiI6MTY5Njg2NjUxN30.JWqzTsiDzR-lCNaFSPD_2RUPVkrYaVy_HyGvpzzCGEk';
+
 	// const [symptoms, setSymptoms] = useState([]);
 	const [symptom1, setSymptom1] = useState('');
 	const [symptom2, setSymptom2] = useState('');
@@ -89,6 +175,19 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 	const [openSingle, setOpenSingle] = useState(false);
 	// const handleOpenSingle = () => setOpenSingle(true);
 	const handleCloseSingle = () => setOpenSingle(false);
+
+	const [openMultiple, setOpenMultiple] = useState(false);
+	const handleOpenMultiple = () => setOpenMultiple(true);
+	const handleCloseMultiple = () => setOpenMultiple(false);
+
+	// PapaParse
+	const { CSVReader } = useCSVReader();
+	const [zoneHover, setZoneHover] = useState(false);
+	const [removeHoverColor, setRemoveHoverColor] = useState(
+		DEFAULT_REMOVE_HOVER_COLOR
+	);
+
+	const [multipleRecords, setMultipleRecords] = useState([]);
 
 	const [formData, setFormData] = useState({
 		exam_date: dayjs(),
@@ -102,9 +201,7 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 	});
 
 	const fetchSymptoms = async () => {
-		const api_medic_token =
-			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY3ODc1MzksIm5iZiI6MTY5Njc4MDMzOX0.GpvUdcSCx44ZN4Wo-6_sgE4_GQMTpeZjp_ggigMkpS8';
-		const url = `https://sandbox-healthservice.priaid.ch/symptoms?token=${api_medic_token}&format=json&language=en-gb`;
+		const url = `https://sandbox-healthservice.priaid.ch/symptoms?token=${APIMEDIC_API_KEY}&format=json&language=en-gb`;
 		const response = await fetch(url);
 		if (response.ok) {
 			const data = await response.json();
@@ -125,9 +222,7 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 			: `[${formData.symptom_1}]`;
 		const gender = JSON.parse(formData.is_male) ? 'male' : 'female';
 		const birth_year = formData.birth_year;
-		const api_medic_token =
-			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY3ODc1NjcsIm5iZiI6MTY5Njc4MDM2N30.I_opuiUKUg4HppXAUUb8RG6liiEN4CrddPZuVvPdGqg';
-		const url = `https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=${symptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${api_medic_token}&format=json&language=en-gb`;
+		const url = `https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=${symptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${API_MEDIC_API_KEY_DIAGNOSIS}&format=json&language=en-gb`;
 		const response = await fetch(url);
 		if (response.ok) {
 			const data = await response.json();
@@ -171,6 +266,107 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 		}
 	};
 
+	// const handleMultipleRecords = async (e) => {
+	// 	multipleRecords.map((record) => {
+	// 		const birth_year = record[3];
+	// 		const is_male = record[4];
+	// 		const symptom_1 = record[5];
+	// 		const symptom_2 = record[6];
+
+	// 		const symptoms = symptom_2 ? `[${symptom_1},${symptom_2}]` : `[${symptom_1}]`;
+	// 		const gender = JSON.parse(is_male) ? 'male' : 'female';
+	// 		const url = `https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=${symptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${APIMEDIC_API_KEY}&format=json&language=en-gb`;
+
+	// 		const response = await fetch(url);
+	// 		if (response.ok) {
+	// 			const data = await response.json();
+	// 			const diagnoses = data.map((diagnosis) => diagnosis.Issue.ProfName);
+
+	// 			const postData = {};
+	// 			postData.exam_date = dayjs(formData.exam_date)
+	// 				.format('YYYY-MM-DD')
+	// 				.toString();
+	// 			postData.first_name = formData.first_name;
+	// 			postData.last_name = formData.last_name;
+	// 			postData.birth_year = Number(formData.birth_year);
+	// 			postData.is_male = formData.is_male === 'true' ? true : false;
+	// 			postData.symptom_1 = symptom1;
+	// 			postData.symptom_2 = symptom2;
+	// 			postData.diagnosis = diagnoses.join(', ');
+
+	// 			const recordUrl = 'http://localhost:8000/api/records/';
+	// 			const fetchConfig = {
+	// 				method: 'post',
+	// 				body: JSON.stringify(postData),
+	// 				headers: {
+	// 					'Content-Type': 'application/json',
+	// 				},
+	// 			};
+	// 			const postResponse = await fetch(recordUrl, fetchConfig);
+	// 			if (postResponse.ok) {
+	// 				setFormData({
+	// 					exam_date: dayjs(),
+	// 					first_name: '',
+	// 					last_name: '',
+	// 					birth_year: '',
+	// 					is_male: '',
+	// 					symptom_1: '',
+	// 					symptom_2: '',
+	// 					diagnosis: '',
+	// 				});
+	// 			}
+	// 	}
+	// })};
+
+	const handleMultipleRecords = async (e) => {
+		e.preventDefault();
+		for (const record of multipleRecords) {
+			const birth_year = record[3];
+			const is_male = record[4];
+			let symptom_1 = record[5];
+			let symptom_2 = record[6];
+			const symptoms = symptom_2
+				? `[${symptom_1},${symptom_2}]`
+				: `[${symptom_1}]`;
+			const gender = is_male === 'TRUE' ? 'male' : 'female';
+			const url = `https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=${symptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${API_MEDIC_API_KEY_DIAGNOSIS}&format=json&language=en-gb`;
+
+			const response = await fetch(url);
+			console.log(response);
+			if (response.ok) {
+				const data = await response.json();
+				const diagnoses = data.map((diagnosis) => diagnosis.Issue.ProfName);
+				symptom_1 = symptoms.find((symptom) => symptom.Name === record[5]);
+				symptom_2 = symptoms.find((symptom) => symptom.Name === record[6]);
+
+				let postData = {};
+				postData.exam_date = dayjs(record[0]).format('YYYY-MM-DD').toString();
+				postData.first_name = record[1];
+				postData.last_name = record[2];
+				postData.birth_year = Number(birth_year);
+				postData.is_male = is_male === 'TRUE' ? true : false;
+				postData.symptom_1 = symptom_1;
+				postData.symptom_2 = symptom_2;
+				postData.diagnosis = diagnoses.join(', ');
+
+				const recordUrl = 'http://localhost:8000/api/records/';
+				const fetchConfig = {
+					method: 'post',
+					body: JSON.stringify(postData),
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				};
+				const postResponse = await fetch(recordUrl, fetchConfig);
+				if (postResponse.ok) {
+					postData = {};
+				}
+			}
+		}
+		setSubmission(multipleRecords);
+		handleCloseMultiple();
+	};
+
 	useEffect(() => {
 		fetchSymptoms();
 	}, []);
@@ -188,192 +384,30 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 						Add Single Record
 					</Button>
 
-					{/* Add Single Record Modal */}
-					<Modal
-						aria-labelledby="spring-modal-title"
-						aria-describedby="spring-modal-description"
+					<AddSingleModal
 						open={open}
-						onClose={handleClose}
-						closeAfterTransition
-						slots={{ backdrop: Backdrop }}
-						slotProps={{
-							backdrop: {
-								TransitionComponent: Fade,
-							},
-						}}
-						sx={{ m: 6 }}
-					>
-						<Fade in={open}>
-							<Box sx={style}>
-								<Typography
-									id="spring-modal-title"
-									variant="h4"
-									component="h4"
-									sx={{ mb: 2 }}
-								>
-									Add a Single Record
-								</Typography>
-								<Box
-									component="form"
-									sx={{
-										'& > :not(style)': { m: 1, width: '35ch' },
-									}}
-									autoComplete="off"
-									onSubmit={submitHandlerDiagnosis}
-								>
-									<LocalizationProvider dateAdapter={AdapterDayjs}>
-										<DemoContainer components={['DateField']}>
-											<DateField
-												required
-												fullWidth
-												label="Examination Date"
-												name="exam_date"
-												size="small"
-												value={formData.exam_date}
-											/>
-										</DemoContainer>
-									</LocalizationProvider>
-									<TextField
-										required
-										id="outlined-basic"
-										label="First Name"
-										variant="outlined"
-										size="small"
-										name="first_name"
-										value={formData.first_name}
-										onChange={handleFormChange}
-									/>
-									<TextField
-										required
-										id="outlined-basic"
-										label="Last Name"
-										variant="outlined"
-										size="small"
-										name="last_name"
-										value={formData.last_name}
-										onChange={handleFormChange}
-									/>
-									<TextField
-										required
-										id="outlined-basic"
-										type="number"
-										max="2500"
-										label="Birth Year"
-										variant="outlined"
-										size="small"
-										name="birth_year"
-										value={formData.birth_year}
-										onChange={handleFormChange}
-									/>
-									<FormControl sx={{ pl: 1.5 }}>
-										<FormLabel id="demo-row-radio-buttons-group-label">
-											Gender *
-										</FormLabel>
-										<RadioGroup
-											row
-											aria-labelledby="demo-row-radio-buttons-group-label"
-											name="is_male"
-										>
-											<FormControlLabel
-												value={true}
-												control={
-													<Radio
-														onClick={handleFormChange}
-														checked={formData.is_male === 'true'}
-													/>
-												}
-												label="Male"
-											/>
-											<FormControlLabel
-												value={false}
-												control={
-													<Radio
-														onClick={handleFormChange}
-														checked={formData.is_male === 'false'}
-													/>
-												}
-												label="Female"
-											/>
-										</RadioGroup>
-									</FormControl>
-									<FormControl fullWidth>
-										<TextField
-											required={true}
-											select
-											id="demo-simple-select"
-											label="Primary Symptom"
-											name="symptom_1"
-											value={formData.symptom_1}
-											onChange={handleFormChange}
-										>
-											{symptoms &&
-												symptoms.map((symptom) => (
-													<MenuItem
-														value={symptom.ID}
-														key={symptom.ID}
-														onClick={() => setSymptom1(symptom.Name)}
-													>
-														{symptom.Name}
-													</MenuItem>
-												))}
-										</TextField>
-									</FormControl>
-									<FormControl fullWidth>
-										<TextField
-											select
-											label="Secondary Symptom (Optional)"
-											id="demo-simple-select"
-											name="symptom_2"
-											value={formData.symptom_2}
-											onChange={handleFormChange}
-										>
-											<MenuItem value="">Secondary Symptom (Optional)</MenuItem>
-											{symptoms &&
-												symptoms.map((symptom) => (
-													<MenuItem
-														value={symptom.ID}
-														key={symptom.ID}
-														onClick={() => setSymptom2(symptom.Name)}
-													>
-														{symptom.Name}
-													</MenuItem>
-												))}
-										</TextField>
-									</FormControl>
-									<Box sx={{ pt: 1, justifyContent: 'flex-end' }}>
-										<Button
-											variant="outlined"
-											sx={{ mr: 2 }}
-											onClick={(e) => {
-												setFormData({
-													exam_date: dayjs(),
-													first_name: '',
-													last_name: '',
-													birth_year: '',
-													is_male: '',
-													symptom_1: '',
-													symptom_2: '',
-													diagnosis: '',
-												});
-											}}
-										>
-											Reset
-										</Button>
-										<Button variant="contained" type="submit">
-											Diagnose
-										</Button>
-									</Box>
-								</Box>
-							</Box>
-						</Fade>
-					</Modal>
+						handleClose={handleClose}
+						Fade={Fade}
+						style={style}
+						submitHandlerDiagnosis={submitHandlerDiagnosis}
+						formData={formData}
+						handleFormChange={handleFormChange}
+						symptoms={symptoms}
+						setSymptom1={setSymptom1}
+						setSymptom2={setSymptom2}
+						setFormData={setFormData}
+					/>
+
+					<Button color="inherit" onClick={handleOpenMultiple}>
+						Add Multiple Records
+					</Button>
 
 					{/* Add Multiple Records Modal */}
 					<Modal
 						aria-labelledby="spring-modal-title"
 						aria-describedby="spring-modal-description"
-						open={openSingle}
-						onClose={handleCloseSingle}
+						open={openMultiple}
+						onClose={handleCloseMultiple}
 						closeAfterTransition
 						slots={{ backdrop: Backdrop }}
 						slotProps={{
@@ -383,7 +417,7 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 						}}
 						sx={{ m: 6 }}
 					>
-						<Fade in={openSingle}>
+						<Fade in={openMultiple}>
 							<Box sx={style}>
 								<Typography
 									id="spring-modal-title"
@@ -393,8 +427,8 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 								>
 									Add Multiple Records
 								</Typography>
-								<Box>Upload a CSV file to add multiple records</Box>
-								<Box
+								{/* <Box>Upload a CSV file to add multiple records</Box> */}
+								{/* <Box
 									component="form"
 									sx={{
 										'& > :not(style)': { m: 1, width: '35ch' },
@@ -413,7 +447,82 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 											Upload
 										</Button>
 									</Box>
-								</Box>
+								</Box> */}
+								<CSVReader
+									onUploadAccepted={(results: any) => {
+										// console.log('---------------------------');
+										console.log(results.data);
+										// console.log('---------------------------');
+										setZoneHover(false);
+										setMultipleRecords(results.data);
+									}}
+									onDragOver={(event: DragEvent) => {
+										event.preventDefault();
+										setZoneHover(true);
+									}}
+									onDragLeave={(event: DragEvent) => {
+										event.preventDefault();
+										setZoneHover(false);
+									}}
+								>
+									{({
+										getRootProps,
+										acceptedFile,
+										ProgressBar,
+										getRemoveFileProps,
+										Remove,
+									}: any) => (
+										<>
+											<div
+												{...getRootProps()}
+												style={Object.assign(
+													{},
+													styles.zone,
+													zoneHover && styles.zoneHover
+												)}
+											>
+												{acceptedFile ? (
+													<>
+														<div style={styles.file}>
+															<div style={styles.info}>
+																<span style={styles.size}>
+																	{formatFileSize(acceptedFile.size)}
+																</span>
+																<span style={styles.name}>
+																	{acceptedFile.name}
+																</span>
+															</div>
+															<div style={styles.progressBar}>
+																<ProgressBar />
+															</div>
+															<div
+																{...getRemoveFileProps()}
+																style={styles.remove}
+																onMouseOver={(event: Event) => {
+																	event.preventDefault();
+																	setRemoveHoverColor(REMOVE_HOVER_COLOR_LIGHT);
+																}}
+																onMouseOut={(event: Event) => {
+																	event.preventDefault();
+																	setRemoveHoverColor(
+																		DEFAULT_REMOVE_HOVER_COLOR
+																	);
+																}}
+															>
+																<Remove color={removeHoverColor} />
+															</div>
+														</div>
+													</>
+												) : (
+													'Drop CSV file here or click to upload'
+												)}
+											</div>
+										</>
+									)}
+								</CSVReader>
+								<Button variant="contained" onClick={handleMultipleRecords}>
+									Add Multiple Records
+								</Button>
 							</Box>
 						</Fade>
 					</Modal>

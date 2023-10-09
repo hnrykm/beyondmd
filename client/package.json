@@ -18,7 +18,8 @@
 		"react-scripts": "5.0.1",
 		"web-vitals": "^2.1.4",
 		"@mui/x-date-pickers": "6.16.1",
-		"dayjs": "1.11.10"
+		"dayjs": "1.11.10",
+		"react-papaparse": "4.2.2"
 	},
 	"scripts": {
 		"start": "react-scripts start",
