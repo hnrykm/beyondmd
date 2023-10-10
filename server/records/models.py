@@ -1,7 +1,7 @@
 from django.db import models
 
 class Record(models.Model):
-    exam_date = models.DateField(auto_now=True)
+    exam_date = models.DateField()
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     birth_year = models.SmallIntegerField()

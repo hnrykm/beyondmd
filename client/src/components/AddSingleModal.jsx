@@ -70,7 +70,10 @@ export default function AddSingleModal({
 									label="Examination Date"
 									name="exam_date"
 									size="small"
-									value={formData.exam_date}
+									value={dayjs(formData.exam_date)}
+									onChange={(value) =>
+										setFormData({ ...formData, exam_date: value })
+									}
 								/>
 							</DemoContainer>
 						</LocalizationProvider>

@@ -106,7 +106,6 @@ const MainPage = ({ submission, symptoms }) => {
 		setOpen(true);
 		setSymptom1(record.symptom_1);
 		setSymptom2(record.symptom_2);
-		console.log(record);
 		const symptom1 = symptoms.find(
 			(symptom) => symptom.Name === record.symptom_1
 		);
@@ -131,7 +130,6 @@ const MainPage = ({ submission, symptoms }) => {
 		setOpenDetails(true);
 		setSymptom1(record.symptom_1);
 		setSymptom2(record.symptom_2);
-		console.log(record.diagnosis.split(','));
 		setFormData({
 			id: record.id,
 			exam_date: dayjs(record.exam_date),
@@ -158,7 +156,6 @@ const MainPage = ({ submission, symptoms }) => {
 		const name = e.target.name;
 		const value = e.target.value;
 		setFormData({ ...formData, [name]: value });
-		console.log(name, value);
 	};
 
 	const handleUpdate = async (e) => {
@@ -169,13 +166,12 @@ const MainPage = ({ submission, symptoms }) => {
 		const gender = JSON.parse(formData.is_male) ? 'male' : 'female';
 		const birth_year = formData.birth_year;
 		const api_medic_token =
-			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY4NjU0MzMsIm5iZiI6MTY5Njg1ODIzM30.KTCjz5YU9aHiVByqM6umTx9f_8iJ6tjaxtUa_fXAd6M';
+			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY5MzgwNjUsIm5iZiI6MTY5NjkzMDg2NX0.ckXKtX1zI8HFoyEXf3dwGd1lyxU8iotwjkW9G1icync';
 		const url = `https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=${symptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${api_medic_token}&format=json&language=en-gb`;
 		const response = await fetch(url);
 		if (response.ok) {
 			const data = await response.json();
 			const diagnoses = data.map((diagnosis) => diagnosis.Issue.ProfName);
-
 			const postData = {};
 			postData.exam_date = dayjs(formData.exam_date)
 				.format('YYYY-MM-DD')
@@ -187,7 +183,6 @@ const MainPage = ({ submission, symptoms }) => {
 			postData.symptom_1 = symptom1;
 			postData.symptom_2 = symptom2;
 			postData.diagnosis = diagnoses.join(', ');
-			console.log(postData);
 			const recordUrl = `http://localhost:8000/api/records/${formData.id}`;
 			const fetchConfig = {
 				method: 'put',
@@ -229,7 +224,6 @@ const MainPage = ({ submission, symptoms }) => {
 			const response = await fetch(url, fetchConfig);
 			if (response.ok) {
 				fetchRecords();
-				console.log('Delete successful');
 			}
 		}
 	};
@@ -334,7 +328,10 @@ const MainPage = ({ submission, symptoms }) => {
 										label="Examination Date"
 										name="exam_date"
 										size="small"
-										value={formData.exam_date}
+										value={dayjs(formData.exam_date)}
+										onChange={(value) =>
+											setFormData({ ...formData, exam_date: value })
+										}
 									/>
 								</DemoContainer>
 							</LocalizationProvider>

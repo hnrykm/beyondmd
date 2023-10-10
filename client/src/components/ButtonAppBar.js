@@ -160,9 +160,9 @@ const style = {
 
 export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 	const APIMEDIC_API_KEY =
-		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY4NzM2ODMsIm5iZiI6MTY5Njg2NjQ4M30.gL57g6Syhr1lda-dx1TRN2nV6sBLfGN21DERnahJ-EE';
+		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY5MzgwNjUsIm5iZiI6MTY5NjkzMDg2NX0.ckXKtX1zI8HFoyEXf3dwGd1lyxU8iotwjkW9G1icync';
 	const API_MEDIC_API_KEY_DIAGNOSIS =
-		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY4NzM3MTcsIm5iZiI6MTY5Njg2NjUxN30.JWqzTsiDzR-lCNaFSPD_2RUPVkrYaVy_HyGvpzzCGEk';
+		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY5MzgwNjUsIm5iZiI6MTY5NjkzMDg2NX0.ckXKtX1zI8HFoyEXf3dwGd1lyxU8iotwjkW9G1icync';
 
 	// const [symptoms, setSymptoms] = useState([]);
 	const [symptom1, setSymptom1] = useState('');
@@ -323,21 +323,23 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 		for (const record of multipleRecords) {
 			const birth_year = record[3];
 			const is_male = record[4];
-			let symptom_1 = record[5];
-			let symptom_2 = record[6];
-			const symptoms = symptom_2
+			const symptom_1 = record[5];
+			const symptom_2 = record[6];
+			const theSymptoms = symptom_2
 				? `[${symptom_1},${symptom_2}]`
 				: `[${symptom_1}]`;
 			const gender = is_male === 'TRUE' ? 'male' : 'female';
-			const url = `https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=${symptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${API_MEDIC_API_KEY_DIAGNOSIS}&format=json&language=en-gb`;
-
+			const url = `https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=${theSymptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${API_MEDIC_API_KEY_DIAGNOSIS}&format=json&language=en-gb`;
 			const response = await fetch(url);
-			console.log(response);
 			if (response.ok) {
 				const data = await response.json();
 				const diagnoses = data.map((diagnosis) => diagnosis.Issue.ProfName);
-				symptom_1 = symptoms.find((symptom) => symptom.Name === record[5]);
-				symptom_2 = symptoms.find((symptom) => symptom.Name === record[6]);
+				const symptomName1 = symptoms.find(
+					(symptom) => symptom.ID === Number(symptom_1)
+				);
+				const symptomName2 = symptoms.find(
+					(symptom) => symptom.ID === Number(symptom_2)
+				);
 
 				let postData = {};
 				postData.exam_date = dayjs(record[0]).format('YYYY-MM-DD').toString();
@@ -345,10 +347,9 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 				postData.last_name = record[2];
 				postData.birth_year = Number(birth_year);
 				postData.is_male = is_male === 'TRUE' ? true : false;
-				postData.symptom_1 = symptom_1;
-				postData.symptom_2 = symptom_2;
+				postData.symptom_1 = symptomName1 ? symptomName1.Name : '';
+				postData.symptom_2 = symptomName2 ? symptomName2.Name : '';
 				postData.diagnosis = diagnoses.join(', ');
-
 				const recordUrl = 'http://localhost:8000/api/records/';
 				const fetchConfig = {
 					method: 'post',
@@ -450,9 +451,6 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 								</Box> */}
 								<CSVReader
 									onUploadAccepted={(results: any) => {
-										// console.log('---------------------------');
-										console.log(results.data);
-										// console.log('---------------------------');
 										setZoneHover(false);
 										setMultipleRecords(results.data);
 									}}
