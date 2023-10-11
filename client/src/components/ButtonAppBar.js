@@ -1,4 +1,4 @@
-import React, { useState, useEffect, CSSProperties } from 'react';
+import React, { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -26,6 +26,10 @@ import dayjs from 'dayjs';
 import AddSingleModal from './AddSingleModal';
 import { Document, Page, pdfjs } from 'react-pdf';
 import CloseIcon from '@mui/icons-material/Close';
+import { createTheme, alpha, getContrastRatio } from '@mui/material/styles';
+import { Link } from '@mui/material';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { styled } from '@mui/material/styles';
 
 // PapaParse
 import {
@@ -33,6 +37,33 @@ import {
 	lightenDarkenColor,
 	formatFileSize,
 } from 'react-papaparse';
+import { ThemeProvider } from '@emotion/react';
+
+const tealBase = '#00B295';
+const tealMain = alpha(tealBase, 0.7);
+
+const theme = createTheme({
+	palette: {
+		teal: {
+			main: '#00B295',
+			light: alpha(tealBase, 0.5),
+			dark: alpha(tealBase, 0.9),
+			contrastText: getContrastRatio(tealMain, '#fff') > 2.5 ? '#fff' : '#111',
+		},
+	},
+});
+
+const VisuallyHiddenInput = styled('input')({
+	clip: 'rect(0 0 0 0)',
+	clipPath: 'inset(50%)',
+	height: 1,
+	overflow: 'hidden',
+	position: 'absolute',
+	bottom: 0,
+	left: 0,
+	whiteSpace: 'nowrap',
+	width: 1,
+});
 
 const GREY = '#CCC';
 const GREY_LIGHT = 'rgba(255, 255, 255, 0.4)';
@@ -173,10 +204,6 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 	const [open, setOpen] = useState(false);
 	const handleOpen = () => setOpen(true);
 	const handleClose = () => setOpen(false);
-
-	const [openSingle, setOpenSingle] = useState(false);
-	// const handleOpenSingle = () => setOpenSingle(true);
-	const handleCloseSingle = () => setOpenSingle(false);
 
 	const [openMultiple, setOpenMultiple] = useState(false);
 	const handleOpenMultiple = () => setOpenMultiple(true);
@@ -326,193 +353,261 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 
 	useEffect(() => {
 		fetchSymptoms();
-	}, []);
+	});
 
 	return (
-		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position="static">
-				<Toolbar>
-					<img
-						src="assets/beyondmdlogo.png"
-						alt="beyond md logo"
-						height="30px"
-					/>
-					<Button color="inherit" onClick={handleOpen}>
-						Add Single Record
-					</Button>
-
-					<AddSingleModal
-						open={open}
-						handleClose={handleClose}
-						Fade={Fade}
-						style={style}
-						submitHandlerDiagnosis={submitHandlerDiagnosis}
-						formData={formData}
-						handleFormChange={handleFormChange}
-						symptoms={symptoms}
-						setSymptom1={setSymptom1}
-						setSymptom2={setSymptom2}
-						setFormData={setFormData}
-					/>
-
-					<Button color="inherit" onClick={handleOpenMultiple}>
-						Add Multiple Records
-					</Button>
-
-					{/* Add Multiple Records Modal */}
-					<Modal
-						aria-labelledby="spring-modal-title"
-						aria-describedby="spring-modal-description"
-						open={openMultiple}
-						onClose={handleCloseMultiple}
-						closeAfterTransition
-						slots={{ backdrop: Backdrop }}
-						slotProps={{
-							backdrop: {
-								TransitionComponent: Fade,
-							},
-						}}
-						sx={{ m: 6 }}
-					>
-						<Fade in={openMultiple}>
-							<Box sx={style}>
-								<Box
-									sx={{
-										display: 'flex',
-										justifyContent: 'flex-end',
-										mb: 1,
-									}}
-								>
-									<CloseIcon
-										sx={{ fontSize: '2em', color: 'gray' }}
-										onClick={handleCloseMultiple}
-									/>
+		<ThemeProvider theme={theme}>
+			<Box sx={{ flexGrow: 1 }}>
+				<AppBar position="static" sx={{ p: 2 }} style={{ background: '#fff' }}>
+					<Toolbar>
+						<img
+							src="assets/logo.png"
+							alt="beyond md logo"
+							height="30px"
+							className="logo"
+						/>
+						<h1 className="blue" margin-right="5rem">
+							Hello <span className="navy">Beyond</span>MD
+							<span className="navy">!</span>
+						</h1>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<Button variant="contained" color="teal" onClick={handleOpen}>
+							Add Single Record
+						</Button>
+						<AddSingleModal
+							open={open}
+							handleClose={handleClose}
+							Fade={Fade}
+							style={style}
+							submitHandlerDiagnosis={submitHandlerDiagnosis}
+							formData={formData}
+							handleFormChange={handleFormChange}
+							symptoms={symptoms}
+							setSymptom1={setSymptom1}
+							setSymptom2={setSymptom2}
+							setFormData={setFormData}
+						/>
+						&nbsp;&nbsp;
+						<Button
+							variant="contained"
+							color="teal"
+							onClick={handleOpenMultiple}
+						>
+							Add Multiple Records
+						</Button>
+						{/* Add Multiple Records Modal */}
+						<Modal
+							aria-labelledby="spring-modal-title"
+							aria-describedby="spring-modal-description"
+							open={openMultiple}
+							onClose={handleCloseMultiple}
+							closeAfterTransition
+							slots={{ backdrop: Backdrop }}
+							slotProps={{
+								backdrop: {
+									TransitionComponent: Fade,
+								},
+							}}
+							sx={{ m: 6 }}
+						>
+							<Fade in={openMultiple}>
+								<Box sx={style}>
+									<Box
+										sx={{
+											display: 'flex',
+											justifyContent: 'flex-end',
+										}}
+									>
+										<Link component="button">
+											<CloseIcon
+												sx={{ fontSize: '2em', color: 'gray' }}
+												onClick={handleCloseMultiple}
+											/>
+										</Link>
+									</Box>
+									<Typography
+										id="spring-modal-title"
+										variant="h4"
+										component="h4"
+										sx={{ mb: 2 }}
+									>
+										Add Multiple Records
+									</Typography>
+									<a href="assets/sample.csv">
+										Download sample.csv to test functionality.
+									</a>
+									{/* <Button
+										component="label"
+										variant="contained"
+										startIcon={<CloudUploadIcon />}
+										color="teal"
+									>
+										Upload CSV File
+										<VisuallyHiddenInput type="file" />
+									</Button> */}
+									<CSVReader
+										onUploadAccepted={(results) => {
+											console.log('---------------------------');
+											console.log(results);
+											console.log('---------------------------');
+										}}
+									>
+										{({
+											getRootProps,
+											acceptedFile,
+											ProgressBar,
+											getRemoveFileProps,
+										}) => (
+											<>
+												<div>
+													<Button
+														component="label"
+														variant="outlined"
+														startIcon={<CloudUploadIcon />}
+														color="teal"
+														{...getRootProps()}
+													>
+														Upload CSV File
+														<VisuallyHiddenInput type="file" />
+													</Button>
+													<div>{acceptedFile && acceptedFile.name}</div>
+													{/* <Button
+														color="teal"
+														variant="outlined"
+														{...getRemoveFileProps()}
+													>
+														Remove
+													</Button> */}
+												</div>
+												<ProgressBar />
+											</>
+										)}
+									</CSVReader>
+									{/* <CSVReader
+										onUploadAccepted={(results: any) => {
+											setZoneHover(false);
+											setMultipleRecords(results.data);
+										}}
+										onDragOver={(event: DragEvent) => {
+											event.preventDefault();
+											setZoneHover(true);
+										}}
+										onDragLeave={(event: DragEvent) => {
+											event.preventDefault();
+											setZoneHover(false);
+										}}
+									>
+										{({
+											getRootProps,
+											acceptedFile,
+											ProgressBar,
+											getRemoveFileProps,
+											Remove,
+										}: any) => (
+											<>
+												<div
+													{...getRootProps()}
+													style={Object.assign(
+														{},
+														styles.zone,
+														zoneHover && styles.zoneHover
+													)}
+												>
+													{acceptedFile ? (
+														<>
+															<div style={styles.file}>
+																<div style={styles.info}>
+																	<span style={styles.size}>
+																		{formatFileSize(acceptedFile.size)}
+																	</span>
+																	<span style={styles.name}>
+																		{acceptedFile.name}
+																	</span>
+																</div>
+																<div style={styles.progressBar}>
+																	<ProgressBar />
+																</div>
+																<div
+																	{...getRemoveFileProps()}
+																	style={styles.remove}
+																	onMouseOver={(event: Event) => {
+																		event.preventDefault();
+																		setRemoveHoverColor(
+																			REMOVE_HOVER_COLOR_LIGHT
+																		);
+																	}}
+																	onMouseOut={(event: Event) => {
+																		event.preventDefault();
+																		setRemoveHoverColor(
+																			DEFAULT_REMOVE_HOVER_COLOR
+																		);
+																	}}
+																>
+																	<Remove color={removeHoverColor} />
+																</div>
+															</div>
+														</>
+													) : (
+														'Drop CSV file here or click to upload'
+													)}
+												</div>
+											</>
+										)}
+									</CSVReader> */}
+									<Button
+										variant="contained"
+										color="teal"
+										onClick={handleMultipleRecords}
+									>
+										Add Multiple Records
+									</Button>
 								</Box>
-								<Typography
-									id="spring-modal-title"
-									variant="h4"
-									component="h4"
-									sx={{ mb: 2 }}
-								>
-									Add Multiple Records
-								</Typography>
-								<a href="assets/sample.csv">
-									Download sample.csv to test functionality.
-								</a>
-								<CSVReader
-									onUploadAccepted={(results: any) => {
-										setZoneHover(false);
-										setMultipleRecords(results.data);
-									}}
-									onDragOver={(event: DragEvent) => {
-										event.preventDefault();
-										setZoneHover(true);
-									}}
-									onDragLeave={(event: DragEvent) => {
-										event.preventDefault();
-										setZoneHover(false);
-									}}
-								>
-									{({
-										getRootProps,
-										acceptedFile,
-										ProgressBar,
-										getRemoveFileProps,
-										Remove,
-									}: any) => (
-										<>
-											<div
-												{...getRootProps()}
-												style={Object.assign(
-													{},
-													styles.zone,
-													zoneHover && styles.zoneHover
-												)}
-											>
-												{acceptedFile ? (
-													<>
-														<div style={styles.file}>
-															<div style={styles.info}>
-																<span style={styles.size}>
-																	{formatFileSize(acceptedFile.size)}
-																</span>
-																<span style={styles.name}>
-																	{acceptedFile.name}
-																</span>
-															</div>
-															<div style={styles.progressBar}>
-																<ProgressBar />
-															</div>
-															<div
-																{...getRemoveFileProps()}
-																style={styles.remove}
-																onMouseOver={(event: Event) => {
-																	event.preventDefault();
-																	setRemoveHoverColor(REMOVE_HOVER_COLOR_LIGHT);
-																}}
-																onMouseOut={(event: Event) => {
-																	event.preventDefault();
-																	setRemoveHoverColor(
-																		DEFAULT_REMOVE_HOVER_COLOR
-																	);
-																}}
-															>
-																<Remove color={removeHoverColor} />
-															</div>
-														</div>
-													</>
-												) : (
-													'Drop CSV file here or click to upload'
-												)}
-											</div>
-										</>
-									)}
-								</CSVReader>
-								<Button variant="contained" onClick={handleMultipleRecords}>
-									Add Multiple Records
-								</Button>
-							</Box>
-						</Fade>
-					</Modal>
-
-					{/* Resume Modal */}
-					<Modal
-						aria-labelledby="spring-modal-title"
-						aria-describedby="spring-modal-description"
-						open={openResume}
-						onClose={handleCloseResume}
-						closeAfterTransition
-						slots={{ backdrop: Backdrop }}
-						slotProps={{
-							backdrop: {
-								TransitionComponent: Fade,
-							},
-						}}
-						sx={{ m: 6 }}
-					>
-						<Fade in={openResume}>
-							<Box sx={style}>
-								<a href="assets/henry-kim-resume.pdf">
-									<Document file="assets/henry-kim-resume.pdf">
-										<Page
-											className="pdf-page"
-											pageNumber={1}
-											renderTextLayer={false}
-											renderAnnotationLayer={false}
-										/>
-									</Document>
-								</a>
-								<Button variant="contained" onClick={handleCloseResume}>
-									View Health Records
-								</Button>
-							</Box>
-						</Fade>
-					</Modal>
-					<Button color="inherit" onClick={handleOpenResume}>
-						View Resume
-					</Button>
-				</Toolbar>
-			</AppBar>
-		</Box>
+							</Fade>
+						</Modal>
+						{/* Resume Modal */}
+						<Modal
+							aria-labelledby="spring-modal-title"
+							aria-describedby="spring-modal-description"
+							open={openResume}
+							onClose={handleCloseResume}
+							closeAfterTransition
+							slots={{ backdrop: Backdrop }}
+							slotProps={{
+								backdrop: {
+									TransitionComponent: Fade,
+								},
+							}}
+							sx={{ m: 6 }}
+						>
+							<Fade in={openResume}>
+								<Box sx={style}>
+									<a href="assets/henry-kim-resume.pdf">
+										<Document file="assets/henry-kim-resume.pdf">
+											<Page
+												className="pdf-page"
+												pageNumber={1}
+												renderTextLayer={false}
+												renderAnnotationLayer={false}
+											/>
+										</Document>
+									</a>
+									<Button
+										variant="contained"
+										color="teal"
+										onClick={handleCloseResume}
+									>
+										View Health Records
+									</Button>
+								</Box>
+							</Fade>
+						</Modal>
+						&nbsp;&nbsp;
+						<Button variant="contained" color="teal" onClick={handleOpenResume}>
+							View Resume
+						</Button>
+					</Toolbar>
+				</AppBar>
+			</Box>
+		</ThemeProvider>
 	);
 }

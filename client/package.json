@@ -20,7 +20,9 @@
 		"@mui/x-date-pickers": "6.16.1",
 		"dayjs": "1.11.10",
 		"react-papaparse": "4.2.2",
-		"react-pdf": "7.5.0"
+		"react-pdf": "7.5.0",
+		"@mui/material-next": "6.0.0-alpha.105",
+		"@material/web": "1.0.0"
 	},
 	"scripts": {
 		"start": "react-scripts start",

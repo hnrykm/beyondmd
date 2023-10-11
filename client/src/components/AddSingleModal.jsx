@@ -16,6 +16,8 @@ import dayjs from 'dayjs';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
+import { Link } from '@mui/material';
+
 export default function AddSingleModal({
 	open,
 	handleClose,
@@ -50,13 +52,14 @@ export default function AddSingleModal({
 						sx={{
 							display: 'flex',
 							justifyContent: 'flex-end',
-							mb: 1,
 						}}
 					>
-						<CloseIcon
-							sx={{ fontSize: '2em', color: 'gray' }}
-							onClick={handleClose}
-						/>
+						<Link component="button">
+							<CloseIcon
+								sx={{ fontSize: '2em', color: 'gray' }}
+								onClick={handleClose}
+							/>
+						</Link>
 					</Box>
 					<Typography
 						id="spring-modal-title"
@@ -199,6 +202,7 @@ export default function AddSingleModal({
 						<Box sx={{ pt: 1, justifyContent: 'flex-end' }}>
 							<Button
 								variant="outlined"
+								color="teal"
 								sx={{ mr: 2 }}
 								onClick={(e) => {
 									setFormData({
@@ -215,7 +219,7 @@ export default function AddSingleModal({
 							>
 								Reset
 							</Button>
-							<Button variant="contained" type="submit">
+							<Button variant="contained" color="teal" type="submit">
 								Diagnose
 							</Button>
 						</Box>

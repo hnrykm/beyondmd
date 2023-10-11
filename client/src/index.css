@@ -14,16 +14,19 @@ code {
 
 .blue {
 	color: #0fa4e6;
+	font-size: 1.5rem;
 	font-weight: bold;
 }
 
 .navy {
 	color: #00254a;
+	font-size: 1.5rem;
 }
 
 .logo {
-	height: 3rem;
-	animation: rotation 2s infinite linear;
+	height: 2.2rem;
+	margin-right: 0.7rem;
+	animation: rotation 5s infinite linear;
 }
 
 @keyframes rotation {
