@@ -7,3 +7,5 @@ RUN chmod +x /wait
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 CMD /wait && python manage.py runserver 0.0.0.0:8000
+
+# Installs/upgrades pip, wait, dependencies in requirements and runs server when the database is up and running.

@@ -1,5 +1,7 @@
 from django.db import models
 
+
+# Defines project tables so the Django ORM can generate PostgreSQL tables.
 class Record(models.Model):
     exam_date = models.DateField()
     first_name = models.CharField(max_length=100)
@@ -10,5 +12,7 @@ class Record(models.Model):
     symptom_2 = models.CharField(max_length=100)
     diagnosis = models.CharField(max_length=100)
 
-    def __str__(self):
-        return f"{self.exam_date} - {self.last_name}, {self.first_name}"
+
+# Label shown for each record in the Admin panel.
+def __str__(self):
+    return f"{self.exam_date} - {self.last_name}, {self.first_name}"

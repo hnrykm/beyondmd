@@ -1,6 +1,8 @@
 from common.json import ModelEncoder
 from .models import Record
 
+
+# Encoder to return all the data and the id number.
 class RecordEncoder(ModelEncoder):
     model = Record
     properties = [

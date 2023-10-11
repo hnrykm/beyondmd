@@ -10,7 +10,8 @@ class DateEncoder(JSONEncoder):
             return o.isoformat()
         else:
             return super().default(o)
-        
+
+
 class TimeEncoder(JSONEncoder):
     def default(self, o):
         if isinstance(o, (datetime, time)):
