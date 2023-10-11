@@ -198,9 +198,9 @@ const style = {
 
 export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 	const APIMEDIC_API_KEY =
-		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTcwNTI4MjksIm5iZiI6MTY5NzA0NTYyOX0.wXeK48s-os7XGHB1Wk2MY1szkYBJ7LAioMhIe47pzik';
+		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTcwNjEwODcsIm5iZiI6MTY5NzA1Mzg4N30.Q0hORt4pdRvVaYxgxk8-yxyVmANWlMhdm4-61zKp1ik';
 	const API_MEDIC_API_KEY_DIAGNOSIS =
-		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTcwNTI4MjksIm5iZiI6MTY5NzA0NTYyOX0.wXeK48s-os7XGHB1Wk2MY1szkYBJ7LAioMhIe47pzik';
+		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTcwNjEwODcsIm5iZiI6MTY5NzA1Mzg4N30.Q0hORt4pdRvVaYxgxk8-yxyVmANWlMhdm4-61zKp1ik';
 
 	// const [symptoms, setSymptoms] = useState([]);
 	const [symptom1, setSymptom1] = useState('');
@@ -365,12 +365,14 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 			<Box sx={{ flexGrow: 1 }}>
 				<AppBar position="static" sx={{ p: 2 }} style={{ background: '#fff' }}>
 					<Toolbar>
-						<img
-							src="assets/logo.png"
-							alt="beyond md logo"
-							height="30px"
-							className="logo"
-						/>
+						<a href="http://localhost:8080">
+							<img
+								src="assets/logo.png"
+								alt="beyond md logo"
+								height="30px"
+								className="logo"
+							/>
+						</a>
 						<h1 className="blue" margin-right="5rem">
 							Hello <span className="navy">Beyond</span>MD
 							<span className="navy">!</span>
@@ -380,7 +382,7 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 								variant="contained"
 								color="teal"
 								onClick={handleOpen}
-								sx={{ mr: 3 }}
+								sx={{ mr: 4 }}
 							>
 								Add Single Record
 							</Button>
@@ -443,9 +445,17 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 										>
 											Add Multiple Records
 										</Typography>
-										<a href="assets/sample.csv">
-											Download sample.csv to test functionality.
-										</a>
+										<Typography
+											sx={{
+												backgroundColor: 'rgb(255,243,205)',
+												p: 2,
+												mb: 2,
+											}}
+										>
+											<a href="assets/sample.csv" className="no-underline">
+												Download sample.csv to test functionality
+											</a>
+										</Typography>
 										{/* <Button
 										component="label"
 										variant="contained"
@@ -455,7 +465,7 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 										Upload CSV File
 										<VisuallyHiddenInput type="file" />
 									</Button> */}
-										<CSVReader
+										{/* <CSVReader
 											onUploadAccepted={(results) => {
 												console.log(results);
 												setMultipleRecords(results.data);
@@ -489,6 +499,47 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 														</Button>
 													</div>
 													<ProgressBar />
+												</>
+											)}
+										</CSVReader> */}
+
+										<CSVReader
+											onUploadAccepted={(results) => {
+												console.log(results);
+												setMultipleRecords(results.data);
+											}}
+										>
+											{({
+												getRootProps,
+												acceptedFile,
+												ProgressBar,
+												getRemoveFileProps,
+											}) => (
+												<>
+													<div style={{ alignItems: 'center' }}>
+														<Button
+															variant="contained"
+															startIcon={<CloudUploadIcon />}
+															{...getRootProps()}
+															sx={{ width: '334px' }}
+														>
+															Upload CSV File
+														</Button>
+														{acceptedFile ? (
+															<div>
+																<Button
+																	variant="outlined"
+																	{...getRemoveFileProps()}
+																	sx={{ mt: 1, width: '334px' }}
+																	size="small"
+																>
+																	Remove {acceptedFile.name}
+																</Button>{' '}
+															</div>
+														) : (
+															''
+														)}
+													</div>
 												</>
 											)}
 										</CSVReader>
@@ -567,6 +618,7 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 											variant="contained"
 											color="teal"
 											onClick={handleMultipleRecords}
+											sx={{ mt: 3 }}
 										>
 											Add Multiple Records
 										</Button>
@@ -597,6 +649,7 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 											// alignItems: 'center',
 											// justifyContent: 'center',
 											height: '100%',
+											backgroundColor: '#00254B',
 										}}
 									>
 										<Box
@@ -609,10 +662,10 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 												<CloseIcon
 													sx={{
 														fontSize: '2em',
-														color: 'gray',
-														mt: 4,
-														mr: 4,
-														mb: -1,
+														color: 'white',
+														mt: 1,
+														mr: 2,
+														mb: 0,
 													}}
 													onClick={handleCloseResume}
 												/>

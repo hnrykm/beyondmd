@@ -37,3 +37,8 @@ code {
 		transform: rotate(359deg);
 	}
 }
+
+.no-underline {
+	text-decoration: none;
+	color: #000;
+}

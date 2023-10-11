@@ -8,7 +8,7 @@ from .models import Record
 @require_http_methods(["GET", "POST"])
 def api_records(request):
     if request.method == "GET":
-        records = Record.objects.all()
+        records = Record.objects.all().order_by('exam_date').values()
         return JsonResponse({"records": records}, encoder=RecordEncoder)
     elif request.method == "POST":
         try:
