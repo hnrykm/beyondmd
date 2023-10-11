@@ -29,6 +29,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
 import dayjs from 'dayjs';
 import TextField from '@mui/material/TextField';
+import { Document, Page, pdfjs } from 'react-pdf';
 
 const Fade = React.forwardRef(function Fade(props, ref) {
 	const {
@@ -142,6 +143,8 @@ const MainPage = ({ submission, symptoms }) => {
 			diagnosis: record.diagnosis.split(','),
 		});
 	};
+
+	pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 	const fetchRecords = async () => {
 		const url = 'http://localhost:8000/api/records/';

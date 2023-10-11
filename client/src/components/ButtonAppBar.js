@@ -24,6 +24,8 @@ import { useSpring, animated } from '@react-spring/web';
 // import { DateField } from '@mui/x-date-pickers/DateField';
 import dayjs from 'dayjs';
 import AddSingleModal from './AddSingleModal';
+import { Document, Page, pdfjs } from 'react-pdf';
+import CloseIcon from '@mui/icons-material/Close';
 
 // PapaParse
 import {
@@ -180,6 +182,10 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 	const handleOpenMultiple = () => setOpenMultiple(true);
 	const handleCloseMultiple = () => setOpenMultiple(false);
 
+	const [openResume, setOpenResume] = useState(true);
+	const handleOpenResume = () => setOpenResume(true);
+	const handleCloseResume = () => setOpenResume(false);
+
 	// PapaParse
 	const { CSVReader } = useCSVReader();
 	const [zoneHover, setZoneHover] = useState(false);
@@ -266,58 +272,6 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 		}
 	};
 
-	// const handleMultipleRecords = async (e) => {
-	// 	multipleRecords.map((record) => {
-	// 		const birth_year = record[3];
-	// 		const is_male = record[4];
-	// 		const symptom_1 = record[5];
-	// 		const symptom_2 = record[6];
-
-	// 		const symptoms = symptom_2 ? `[${symptom_1},${symptom_2}]` : `[${symptom_1}]`;
-	// 		const gender = JSON.parse(is_male) ? 'male' : 'female';
-	// 		const url = `https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=${symptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${APIMEDIC_API_KEY}&format=json&language=en-gb`;
-
-	// 		const response = await fetch(url);
-	// 		if (response.ok) {
-	// 			const data = await response.json();
-	// 			const diagnoses = data.map((diagnosis) => diagnosis.Issue.ProfName);
-
-	// 			const postData = {};
-	// 			postData.exam_date = dayjs(formData.exam_date)
-	// 				.format('YYYY-MM-DD')
-	// 				.toString();
-	// 			postData.first_name = formData.first_name;
-	// 			postData.last_name = formData.last_name;
-	// 			postData.birth_year = Number(formData.birth_year);
-	// 			postData.is_male = formData.is_male === 'true' ? true : false;
-	// 			postData.symptom_1 = symptom1;
-	// 			postData.symptom_2 = symptom2;
-	// 			postData.diagnosis = diagnoses.join(', ');
-
-	// 			const recordUrl = 'http://localhost:8000/api/records/';
-	// 			const fetchConfig = {
-	// 				method: 'post',
-	// 				body: JSON.stringify(postData),
-	// 				headers: {
-	// 					'Content-Type': 'application/json',
-	// 				},
-	// 			};
-	// 			const postResponse = await fetch(recordUrl, fetchConfig);
-	// 			if (postResponse.ok) {
-	// 				setFormData({
-	// 					exam_date: dayjs(),
-	// 					first_name: '',
-	// 					last_name: '',
-	// 					birth_year: '',
-	// 					is_male: '',
-	// 					symptom_1: '',
-	// 					symptom_2: '',
-	// 					diagnosis: '',
-	// 				});
-	// 			}
-	// 	}
-	// })};
-
 	const handleMultipleRecords = async (e) => {
 		e.preventDefault();
 		for (const record of multipleRecords) {
@@ -367,6 +321,8 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 		setSubmission(multipleRecords);
 		handleCloseMultiple();
 	};
+
+	pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 	useEffect(() => {
 		fetchSymptoms();
@@ -420,6 +376,18 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 					>
 						<Fade in={openMultiple}>
 							<Box sx={style}>
+								<Box
+									sx={{
+										display: 'flex',
+										justifyContent: 'flex-end',
+										mb: 1,
+									}}
+								>
+									<CloseIcon
+										sx={{ fontSize: '2em', color: 'gray' }}
+										onClick={handleCloseMultiple}
+									/>
+								</Box>
 								<Typography
 									id="spring-modal-title"
 									variant="h4"
@@ -428,27 +396,9 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 								>
 									Add Multiple Records
 								</Typography>
-								{/* <Box>Upload a CSV file to add multiple records</Box> */}
-								{/* <Box
-									component="form"
-									sx={{
-										'& > :not(style)': { m: 1, width: '35ch' },
-									}}
-									autoComplete="off"
-									onSubmit={submitHandlerDiagnosis}
-								>
-									<Button>
-										<input type="file" size="large" />
-									</Button>
-									<Box sx={{ pt: 1, justifyContent: 'flex-end' }}>
-										<Button variant="outlined" sx={{ mr: 2 }}>
-											Reset
-										</Button>
-										<Button variant="contained" type="submit">
-											Upload
-										</Button>
-									</Box>
-								</Box> */}
+								<a href="assets/sample.csv">
+									Download sample.csv to test functionality.
+								</a>
 								<CSVReader
 									onUploadAccepted={(results: any) => {
 										setZoneHover(false);
@@ -524,8 +474,43 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 							</Box>
 						</Fade>
 					</Modal>
-					<Button color="inherit">View Resume</Button>
-					<Button color="inherit">Logout</Button>
+
+					{/* Resume Modal */}
+					<Modal
+						aria-labelledby="spring-modal-title"
+						aria-describedby="spring-modal-description"
+						open={openResume}
+						onClose={handleCloseResume}
+						closeAfterTransition
+						slots={{ backdrop: Backdrop }}
+						slotProps={{
+							backdrop: {
+								TransitionComponent: Fade,
+							},
+						}}
+						sx={{ m: 6 }}
+					>
+						<Fade in={openResume}>
+							<Box sx={style}>
+								<a href="assets/henry-kim-resume.pdf">
+									<Document file="assets/henry-kim-resume.pdf">
+										<Page
+											className="pdf-page"
+											pageNumber={1}
+											renderTextLayer={false}
+											renderAnnotationLayer={false}
+										/>
+									</Document>
+								</a>
+								<Button variant="contained" onClick={handleCloseResume}>
+									View Health Records
+								</Button>
+							</Box>
+						</Fade>
+					</Modal>
+					<Button color="inherit" onClick={handleOpenResume}>
+						View Resume
+					</Button>
 				</Toolbar>
 			</AppBar>
 		</Box>

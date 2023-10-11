@@ -15,7 +15,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import dayjs from 'dayjs';
 import MenuItem from '@mui/material/MenuItem';
 import Button from '@mui/material/Button';
-
+import CloseIcon from '@mui/icons-material/Close';
 export default function AddSingleModal({
 	open,
 	handleClose,
@@ -46,6 +46,18 @@ export default function AddSingleModal({
 		>
 			<Fade in={open}>
 				<Box sx={style}>
+					<Box
+						sx={{
+							display: 'flex',
+							justifyContent: 'flex-end',
+							mb: 1,
+						}}
+					>
+						<CloseIcon
+							sx={{ fontSize: '2em', color: 'gray' }}
+							onClick={handleClose}
+						/>
+					</Box>
 					<Typography
 						id="spring-modal-title"
 						variant="h4"
