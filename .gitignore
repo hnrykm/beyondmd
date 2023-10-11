@@ -176,6 +176,8 @@ cython_debug/
 .env.development.local
 .env.test.local
 .env.production.local
+.vscode/
+journal-entries.md
 
 **/*npm-debug.log*
 **/*yarn-debug.log*
