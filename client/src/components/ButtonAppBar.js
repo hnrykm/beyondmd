@@ -30,6 +30,11 @@ import { createTheme, alpha, getContrastRatio } from '@mui/material/styles';
 import { Link } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
+import { Dialog } from '@mui/material';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 // PapaParse
 import {
@@ -193,9 +198,9 @@ const style = {
 
 export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 	const APIMEDIC_API_KEY =
-		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY5MzgwNjUsIm5iZiI6MTY5NjkzMDg2NX0.ckXKtX1zI8HFoyEXf3dwGd1lyxU8iotwjkW9G1icync';
+		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTcwMDYyNTYsIm5iZiI6MTY5Njk5OTA1Nn0.wmVJK8C8zOqxcfNgcOknCJBUfeU3RjyIZm4xMkyPj_I';
 	const API_MEDIC_API_KEY_DIAGNOSIS =
-		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTY5MzgwNjUsIm5iZiI6MTY5NjkzMDg2NX0.ckXKtX1zI8HFoyEXf3dwGd1lyxU8iotwjkW9G1icync';
+		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTcwMDYyNTYsIm5iZiI6MTY5Njk5OTA1Nn0.wmVJK8C8zOqxcfNgcOknCJBUfeU3RjyIZm4xMkyPj_I';
 
 	// const [symptoms, setSymptoms] = useState([]);
 	const [symptom1, setSymptom1] = useState('');
@@ -209,7 +214,7 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 	const handleOpenMultiple = () => setOpenMultiple(true);
 	const handleCloseMultiple = () => setOpenMultiple(false);
 
-	const [openResume, setOpenResume] = useState(true);
+	const [openResume, setOpenResume] = useState(false);
 	const handleOpenResume = () => setOpenResume(true);
 	const handleCloseResume = () => setOpenResume(false);
 
@@ -447,9 +452,8 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 									</Button> */}
 									<CSVReader
 										onUploadAccepted={(results) => {
-											console.log('---------------------------');
 											console.log(results);
-											console.log('---------------------------');
+											setMultipleRecords(results.data);
 										}}
 									>
 										{({
@@ -471,13 +475,13 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 														<VisuallyHiddenInput type="file" />
 													</Button>
 													<div>{acceptedFile && acceptedFile.name}</div>
-													{/* <Button
+													<Button
 														color="teal"
 														variant="outlined"
 														{...getRemoveFileProps()}
 													>
 														Remove
-													</Button> */}
+													</Button>
 												</div>
 												<ProgressBar />
 											</>
@@ -565,7 +569,9 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 							</Fade>
 						</Modal>
 						{/* Resume Modal */}
-						<Modal
+						<Dialog
+							maxWidth="md"
+							fullWidth="true"
 							aria-labelledby="spring-modal-title"
 							aria-describedby="spring-modal-description"
 							open={openResume}
@@ -577,10 +583,16 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 									TransitionComponent: Fade,
 								},
 							}}
-							sx={{ m: 6 }}
 						>
 							<Fade in={openResume}>
-								<Box sx={style}>
+								<Box
+									sx={{
+										display: 'flex',
+										alignItems: 'center',
+										justifyContent: 'center',
+										height: '100%',
+									}}
+								>
 									<a href="assets/henry-kim-resume.pdf">
 										<Document file="assets/henry-kim-resume.pdf">
 											<Page
@@ -591,16 +603,17 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 											/>
 										</Document>
 									</a>
-									<Button
+									<br />
+									{/* <Button
 										variant="contained"
 										color="teal"
 										onClick={handleCloseResume}
 									>
 										View Health Records
-									</Button>
+									</Button> */}
 								</Box>
 							</Fade>
-						</Modal>
+						</Dialog>
 						&nbsp;&nbsp;
 						<Button variant="contained" color="teal" onClick={handleOpenResume}>
 							View Resume
