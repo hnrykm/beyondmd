@@ -22,7 +22,8 @@
 		"react-papaparse": "4.2.2",
 		"react-pdf": "7.5.0",
 		"@mui/material-next": "6.0.0-alpha.105",
-		"@material/web": "1.0.0"
+		"@material/web": "1.0.0",
+		"@mui/x-data-grid": "6.16.1"
 	},
 	"scripts": {
 		"start": "react-scripts start",

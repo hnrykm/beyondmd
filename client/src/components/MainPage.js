@@ -29,6 +29,9 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
 import dayjs from 'dayjs';
 import TextField from '@mui/material/TextField';
+import { Link } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import { DataGrid } from '@mui/x-data-grid';
 
 const Fade = React.forwardRef(function Fade(props, ref) {
 	const {
@@ -166,7 +169,7 @@ const MainPage = ({ submission, symptoms }) => {
 		const gender = JSON.parse(formData.is_male) ? 'male' : 'female';
 		const birth_year = formData.birth_year;
 		const api_medic_token =
-			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTcwMDYyNTYsIm5iZiI6MTY5Njk5OTA1Nn0.wmVJK8C8zOqxcfNgcOknCJBUfeU3RjyIZm4xMkyPj_I';
+			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTcwNTI4MjksIm5iZiI6MTY5NzA0NTYyOX0.wXeK48s-os7XGHB1Wk2MY1szkYBJ7LAioMhIe47pzik';
 		const url = `https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=${symptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${api_medic_token}&format=json&language=en-gb`;
 		const response = await fetch(url);
 		if (response.ok) {
@@ -234,27 +237,43 @@ const MainPage = ({ submission, symptoms }) => {
 
 	return (
 		<div>
-			<Box sx={{ justifyContent: 'center' }}>
+			<Box sx={{ display: 'flex', justifyContent: 'center', mt: 7 }}>
 				<Box>
 					<TableContainer component={Paper}>
 						<Table aria-label="simple table">
 							<TableHead>
 								<TableRow>
-									<TableCell>Examination Date</TableCell>
-									<TableCell>Last Name</TableCell>
-									<TableCell>First Name</TableCell>
-									<TableCell>Possible Diagnosis</TableCell>
-									<TableCell>Actions</TableCell>
+									<TableCell sx={{ fontWeight: 'bold' }}>
+										Examination Date
+									</TableCell>
+									<TableCell sx={{ fontWeight: 'bold' }}>Last Name</TableCell>
+									<TableCell sx={{ fontWeight: 'bold' }}>First Name</TableCell>
+									<TableCell sx={{ fontWeight: 'bold' }}>Age</TableCell>
+									<TableCell sx={{ fontWeight: 'bold' }}>
+										Possible Diagnosis
+									</TableCell>
+									<TableCell sx={{ fontWeight: 'bold' }}>Actions</TableCell>
 								</TableRow>
 							</TableHead>
 							<TableBody>
 								{records &&
 									records.map((record) => (
 										<TableRow key={record.id}>
-											<TableCell>{record.exam_date}</TableCell>
-											<TableCell>{record.last_name}</TableCell>
-											<TableCell>{record.first_name}</TableCell>
-											<TableCell>{record.diagnosis}</TableCell>
+											<TableCell sx={{ width: 170 }}>
+												{record.exam_date}
+											</TableCell>
+											<TableCell sx={{ width: 150 }}>
+												{record.last_name}
+											</TableCell>
+											<TableCell sx={{ width: 150 }}>
+												{record.first_name}
+											</TableCell>
+											<TableCell sx={{ width: 70 }}>
+												{dayjs().year() - record.birth_year}
+											</TableCell>
+											<TableCell sx={{ width: 400 }}>
+												{record.diagnosis}
+											</TableCell>
 											<TableCell>
 												<Button
 													variant="outlined"
@@ -304,6 +323,19 @@ const MainPage = ({ submission, symptoms }) => {
 			>
 				<Fade in={open}>
 					<Box sx={style}>
+						<Box
+							sx={{
+								display: 'flex',
+								justifyContent: 'flex-end',
+							}}
+						>
+							<Link component="button">
+								<CloseIcon
+									sx={{ fontSize: '2em', color: 'gray' }}
+									onClick={handleClose}
+								/>
+							</Link>
+						</Box>
 						<Typography
 							id="spring-modal-title"
 							variant="h4"
@@ -469,32 +501,47 @@ const MainPage = ({ submission, symptoms }) => {
 			>
 				<Fade in={openDetails}>
 					<Box sx={style}>
+						<Box
+							sx={{
+								display: 'flex',
+								justifyContent: 'flex-end',
+							}}
+						>
+							<Link component="button">
+								<CloseIcon
+									sx={{ fontSize: '2em', color: 'gray' }}
+									onClick={handleCloseDetails}
+								/>
+							</Link>
+						</Box>
 						<Typography
 							id="spring-modal-title"
 							variant="h4"
 							component="h4"
 							sx={{ mb: 2 }}
 						>
-							Details
-						</Typography>
-						<p>
 							{formData.first_name} {formData.last_name}
-						</p>
+						</Typography>
 						<p>
 							{formData.is_male === true ? 'Male' : 'Female'}, Born{' '}
 							{formData.birth_year} (Age {dayjs().year() - formData.birth_year})
+							<br />
+							<Typography sx={{ fontStyle: 'italic' }}>
+								Examined on {dayjs(formData.exam_date).format('MM/DD/YYYY')}
+							</Typography>
 						</p>
-						<p>Examined on {dayjs(formData.exam_date).format('MM/DD/YYYY')}</p>
-						Symptoms include:
+						{symptom2 ? 'Symptoms include:' : 'Symptom:'}
 						<ul>
 							<li>{symptom1}</li>
 							{symptom2 ? <li>{symptom2}</li> : ''}
 						</ul>
-						Possible Diagnoses:
+						{formData.diagnosis.length === 1
+							? 'Possible Diagnosis:'
+							: 'Possible Diagnoses:'}
 						<br />
 						<ul>
 							{formData.diagnosis &&
-								formData.diagnosis.map((d, id) => <li key="id">{d}</li>)}
+								formData.diagnosis.map((d, id) => <li key={id}>{d}</li>)}
 						</ul>
 					</Box>
 				</Fade>

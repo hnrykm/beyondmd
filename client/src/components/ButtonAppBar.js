@@ -198,9 +198,9 @@ const style = {
 
 export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 	const APIMEDIC_API_KEY =
-		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTcwMDYyNTYsIm5iZiI6MTY5Njk5OTA1Nn0.wmVJK8C8zOqxcfNgcOknCJBUfeU3RjyIZm4xMkyPj_I';
+		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTcwNTI4MjksIm5iZiI6MTY5NzA0NTYyOX0.wXeK48s-os7XGHB1Wk2MY1szkYBJ7LAioMhIe47pzik';
 	const API_MEDIC_API_KEY_DIAGNOSIS =
-		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTcwMDYyNTYsIm5iZiI6MTY5Njk5OTA1Nn0.wmVJK8C8zOqxcfNgcOknCJBUfeU3RjyIZm4xMkyPj_I';
+		'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTcwNTI4MjksIm5iZiI6MTY5NzA0NTYyOX0.wXeK48s-os7XGHB1Wk2MY1szkYBJ7LAioMhIe47pzik';
 
 	// const [symptoms, setSymptoms] = useState([]);
 	const [symptom1, setSymptom1] = useState('');
@@ -375,73 +375,78 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 							Hello <span className="navy">Beyond</span>MD
 							<span className="navy">!</span>
 						</h1>
-						&nbsp;&nbsp;&nbsp;&nbsp;
-						<Button variant="contained" color="teal" onClick={handleOpen}>
-							Add Single Record
-						</Button>
-						<AddSingleModal
-							open={open}
-							handleClose={handleClose}
-							Fade={Fade}
-							style={style}
-							submitHandlerDiagnosis={submitHandlerDiagnosis}
-							formData={formData}
-							handleFormChange={handleFormChange}
-							symptoms={symptoms}
-							setSymptom1={setSymptom1}
-							setSymptom2={setSymptom2}
-							setFormData={setFormData}
-						/>
-						&nbsp;&nbsp;
-						<Button
-							variant="contained"
-							color="teal"
-							onClick={handleOpenMultiple}
-						>
-							Add Multiple Records
-						</Button>
-						{/* Add Multiple Records Modal */}
-						<Modal
-							aria-labelledby="spring-modal-title"
-							aria-describedby="spring-modal-description"
-							open={openMultiple}
-							onClose={handleCloseMultiple}
-							closeAfterTransition
-							slots={{ backdrop: Backdrop }}
-							slotProps={{
-								backdrop: {
-									TransitionComponent: Fade,
-								},
-							}}
-							sx={{ m: 6 }}
-						>
-							<Fade in={openMultiple}>
-								<Box sx={style}>
-									<Box
-										sx={{
-											display: 'flex',
-											justifyContent: 'flex-end',
-										}}
-									>
-										<Link component="button">
-											<CloseIcon
-												sx={{ fontSize: '2em', color: 'gray' }}
-												onClick={handleCloseMultiple}
-											/>
-										</Link>
-									</Box>
-									<Typography
-										id="spring-modal-title"
-										variant="h4"
-										component="h4"
-										sx={{ mb: 2 }}
-									>
-										Add Multiple Records
-									</Typography>
-									<a href="assets/sample.csv">
-										Download sample.csv to test functionality.
-									</a>
-									{/* <Button
+						<Box sx={{ ml: 10 }}>
+							<Button
+								variant="contained"
+								color="teal"
+								onClick={handleOpen}
+								sx={{ mr: 3 }}
+							>
+								Add Single Record
+							</Button>
+							<AddSingleModal
+								open={open}
+								handleClose={handleClose}
+								Fade={Fade}
+								style={style}
+								submitHandlerDiagnosis={submitHandlerDiagnosis}
+								formData={formData}
+								handleFormChange={handleFormChange}
+								symptoms={symptoms}
+								setSymptom1={setSymptom1}
+								setSymptom2={setSymptom2}
+								setFormData={setFormData}
+							/>
+							<Button
+								variant="contained"
+								color="teal"
+								onClick={handleOpenMultiple}
+								sx={{ mr: 3 }}
+							>
+								Add Multiple Records
+							</Button>
+							{/* Add Multiple Records Modal */}
+							<Modal
+								aria-labelledby="spring-modal-title"
+								aria-describedby="spring-modal-description"
+								open={openMultiple}
+								onClose={handleCloseMultiple}
+								closeAfterTransition
+								slots={{ backdrop: Backdrop }}
+								slotProps={{
+									backdrop: {
+										TransitionComponent: Fade,
+									},
+								}}
+								sx={{ m: 6 }}
+							>
+								<Fade in={openMultiple}>
+									<Box sx={style}>
+										<Box
+											sx={{
+												display: 'flex',
+												justifyContent: 'flex-end',
+											}}
+										>
+											<Link component="button">
+												<CloseIcon
+													sx={{ fontSize: '2em', color: 'gray' }}
+													onClick={handleCloseMultiple}
+												/>
+											</Link>
+										</Box>
+										<Typography
+											id="spring-modal-title"
+											variant="h4"
+											component="h4"
+											sx={{ mb: 2 }}
+										>
+											Add Multiple Records
+										</Typography>
+										<a href="assets/sample.csv">
+											Download sample.csv to test functionality.
+										</a>
+										{/* <Button
 										component="label"
 										variant="contained"
 										startIcon={<CloudUploadIcon />}
@@ -450,44 +455,44 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 										Upload CSV File
 										<VisuallyHiddenInput type="file" />
 									</Button> */}
-									<CSVReader
-										onUploadAccepted={(results) => {
-											console.log(results);
-											setMultipleRecords(results.data);
-										}}
-									>
-										{({
-											getRootProps,
-											acceptedFile,
-											ProgressBar,
-											getRemoveFileProps,
-										}) => (
-											<>
-												<div>
-													<Button
-														component="label"
-														variant="outlined"
-														startIcon={<CloudUploadIcon />}
-														color="teal"
-														{...getRootProps()}
-													>
-														Upload CSV File
-														<VisuallyHiddenInput type="file" />
-													</Button>
-													<div>{acceptedFile && acceptedFile.name}</div>
-													<Button
-														color="teal"
-														variant="outlined"
-														{...getRemoveFileProps()}
-													>
-														Remove
-													</Button>
-												</div>
-												<ProgressBar />
-											</>
-										)}
-									</CSVReader>
-									{/* <CSVReader
+										<CSVReader
+											onUploadAccepted={(results) => {
+												console.log(results);
+												setMultipleRecords(results.data);
+											}}
+										>
+											{({
+												getRootProps,
+												acceptedFile,
+												ProgressBar,
+												getRemoveFileProps,
+											}) => (
+												<>
+													<div>
+														<Button
+															component="label"
+															variant="outlined"
+															startIcon={<CloudUploadIcon />}
+															color="teal"
+															{...getRootProps()}
+														>
+															Upload CSV File
+															<VisuallyHiddenInput type="file" />
+														</Button>
+														<div>{acceptedFile && acceptedFile.name}</div>
+														<Button
+															color="teal"
+															variant="outlined"
+															{...getRemoveFileProps()}
+														>
+															Remove
+														</Button>
+													</div>
+													<ProgressBar />
+												</>
+											)}
+										</CSVReader>
+										{/* <CSVReader
 										onUploadAccepted={(results: any) => {
 											setZoneHover(false);
 											setMultipleRecords(results.data);
@@ -558,66 +563,92 @@ export default function ButtonAppBar({ setSubmission, symptoms, setSymptoms }) {
 											</>
 										)}
 									</CSVReader> */}
-									<Button
-										variant="contained"
-										color="teal"
-										onClick={handleMultipleRecords}
+										<Button
+											variant="contained"
+											color="teal"
+											onClick={handleMultipleRecords}
+										>
+											Add Multiple Records
+										</Button>
+									</Box>
+								</Fade>
+							</Modal>
+							{/* Resume Modal */}
+							<Dialog
+								maxWidth="50px"
+								// fullWidth
+								aria-labelledby="spring-modal-title"
+								aria-describedby="spring-modal-description"
+								open={openResume}
+								onClose={handleCloseResume}
+								closeAfterTransition
+								slots={{ backdrop: Backdrop }}
+								slotProps={{
+									backdrop: {
+										TransitionComponent: Fade,
+									},
+								}}
+							>
+								<Fade in={openResume}>
+									<Box
+										sx={{
+											display: 'flex',
+											flexDirection: 'column',
+											// alignItems: 'center',
+											// justifyContent: 'center',
+											height: '100%',
+										}}
 									>
-										Add Multiple Records
-									</Button>
-								</Box>
-							</Fade>
-						</Modal>
-						{/* Resume Modal */}
-						<Dialog
-							maxWidth="md"
-							fullWidth="true"
-							aria-labelledby="spring-modal-title"
-							aria-describedby="spring-modal-description"
-							open={openResume}
-							onClose={handleCloseResume}
-							closeAfterTransition
-							slots={{ backdrop: Backdrop }}
-							slotProps={{
-								backdrop: {
-									TransitionComponent: Fade,
-								},
-							}}
-						>
-							<Fade in={openResume}>
-								<Box
-									sx={{
-										display: 'flex',
-										alignItems: 'center',
-										justifyContent: 'center',
-										height: '100%',
-									}}
-								>
-									<a href="assets/henry-kim-resume.pdf">
-										<Document file="assets/henry-kim-resume.pdf">
-											<Page
-												className="pdf-page"
-												pageNumber={1}
-												renderTextLayer={false}
-												renderAnnotationLayer={false}
-											/>
-										</Document>
-									</a>
-									<br />
-									{/* <Button
+										<Box
+											sx={{
+												display: 'flex',
+												justifyContent: 'flex-end',
+											}}
+										>
+											<Link component="button">
+												<CloseIcon
+													sx={{
+														fontSize: '2em',
+														color: 'gray',
+														mt: 4,
+														mr: 4,
+														mb: -1,
+													}}
+													onClick={handleCloseResume}
+												/>
+											</Link>
+										</Box>
+										<Box>
+											<a href="assets/henry-kim-resume.pdf">
+												<Document file="assets/henry-kim-resume.pdf">
+													<Page
+														className="pdf-page"
+														pageNumber={1}
+														renderTextLayer={false}
+														renderAnnotationLayer={false}
+													/>
+												</Document>
+											</a>
+										</Box>
+										{/* <Button
 										variant="contained"
 										color="teal"
 										onClick={handleCloseResume}
 									>
 										View Health Records
 									</Button> */}
-								</Box>
-							</Fade>
-						</Dialog>
-						&nbsp;&nbsp;
-						<Button variant="contained" color="teal" onClick={handleOpenResume}>
-							View Resume
-						</Button>
+									</Box>
+								</Fade>
+							</Dialog>
+							&nbsp;&nbsp;
+							<Button
+								variant="contained"
+								color="teal"
+								onClick={handleOpenResume}
+							>
+								View Resume
+							</Button>
+						</Box>
 					</Toolbar>
 				</AppBar>
 			</Box>
