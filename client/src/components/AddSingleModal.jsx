@@ -28,7 +28,7 @@ export default function AddSingleModal({
 	handleCloseSingle,
 	Fade,
 	style,
-	submitHandlerDiagnosis,
+	handleSingleRecord,
 	formData,
 	handleFormChange,
 	symptoms,
@@ -73,7 +73,7 @@ export default function AddSingleModal({
 							'& > :not(style)': { m: 1, width: '35ch' },
 						}}
 						autoComplete="off"
-						onSubmit={submitHandlerDiagnosis}
+						onSubmit={handleSingleRecord}
 					>
 						{/* Examination Date Field */}
 						<LocalizationProvider dateAdapter={AdapterDayjs}>

@@ -61,7 +61,6 @@ const MainPage = ({ submission, symptoms, APIMEDIC_API_KEY }) => {
 		const symptom2 = symptoms.find(
 			(symptom) => symptom.Name === record.symptom_2
 		);
-		console.log(record.is_male);
 		// Prefills the form fields with the data for the record.
 		setFormData({
 			id: record.id,
@@ -69,7 +68,7 @@ const MainPage = ({ submission, symptoms, APIMEDIC_API_KEY }) => {
 			first_name: record.first_name,
 			last_name: record.last_name,
 			birth_year: record.birth_year,
-			is_male: record.is_male === true ? true : false,
+			is_male: record.is_male === true ? 'true' : 'false',
 			symptom_1: symptom1 ? symptom1.ID : '',
 			symptom_2: symptom2 ? symptom2.ID : '',
 		});

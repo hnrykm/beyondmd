@@ -69,7 +69,7 @@ const NavBar = ({ setSubmission, symptoms, setSymptoms, APIMEDIC_API_KEY }) => {
 	// Fetches a list of symptoms from API Medic to populate the form dropdown fields.
 	useEffect(() => {
 		const fetchSymptoms = async () => {
-			const url = `https://sandbox-healthservice.priaid.ch/symptoms?token=${APIMEDIC_API_KEY}&format=json&language=en-gb`;
+			const url = `https://healthservice.priaid.ch/symptoms?token=${APIMEDIC_API_KEY}&format=json&language=en-gb`;
 			const response = await fetch(url);
 			if (response.ok) {
 				const data = await response.json();
@@ -88,7 +88,7 @@ const NavBar = ({ setSubmission, symptoms, setSymptoms, APIMEDIC_API_KEY }) => {
 			: `[${formData.symptom_1}]`;
 		const gender = JSON.parse(formData.is_male) ? 'male' : 'female';
 		const birth_year = formData.birth_year;
-		const url = `https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=${symptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${APIMEDIC_API_KEY}&format=json&language=en-gb`;
+		const url = `https://healthservice.priaid.ch/diagnosis?symptoms=${symptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${APIMEDIC_API_KEY}&format=json&language=en-gb`;
 		const response = await fetch(url);
 
 		// Step 2: Extract the diagnosis name from the response and prepare a POST request.
