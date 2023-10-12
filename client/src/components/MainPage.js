@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,89 +9,40 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Box, SvgIcon, Typography } from '@mui/material';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import { red } from '@mui/material/colors';
-import { useSpring, animated } from '@react-spring/web';
-import PropTypes from 'prop-types';
 import Backdrop from '@mui/material/Backdrop';
 import Modal from '@mui/material/Modal';
-
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-
+import TextField from '@mui/material/TextField';
+import { Link } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
+
+import { red } from '@mui/material/colors';
+
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import CloseIcon from '@mui/icons-material/Close';
+
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateField } from '@mui/x-date-pickers/DateField';
+
 import dayjs from 'dayjs';
-import TextField from '@mui/material/TextField';
-import { Link } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import { DataGrid } from '@mui/x-data-grid';
+import { Fade, style } from './Fade'; // Fading animation for modal/dialog boxes
 
-const Fade = React.forwardRef(function Fade(props, ref) {
-	const {
-		children,
-		in: open,
-		onClick,
-		onEnter,
-		onExited,
-		ownerState,
-		...other
-	} = props;
-	const style = useSpring({
-		from: { opacity: 0 },
-		to: { opacity: open ? 1 : 0 },
-		onStart: () => {
-			if (open && onEnter) {
-				onEnter(null, true);
-			}
-		},
-		onRest: () => {
-			if (!open && onExited) {
-				onExited(null, true);
-			}
-		},
-	});
-
-	return (
-		<animated.div ref={ref} style={style} {...other}>
-			{React.cloneElement(children, { onClick })}
-		</animated.div>
-	);
-});
-
-Fade.propTypes = {
-	children: PropTypes.element.isRequired,
-	in: PropTypes.bool,
-	onClick: PropTypes.any,
-	onEnter: PropTypes.func,
-	onExited: PropTypes.func,
-	ownerState: PropTypes.any,
-};
-
-const style = {
-	position: 'absolute',
-	top: '50%',
-	left: '50%',
-	transform: 'translate(-50%, -50%)',
-	width: 400,
-	bgcolor: 'background.paper',
-	border: '2px solid #000',
-	boxShadow: 24,
-	p: 4,
-};
-
-const MainPage = ({ submission, symptoms }) => {
+const MainPage = ({ submission, symptoms, APIMEDIC_API_KEY }) => {
+	// Holds the data for all the records in the database.
 	const [records, setRecords] = useState([]);
+
+	// Holds the name/names of the symptoms correlating with an ID.
 	const [symptom1, setSymptom1] = useState('');
 	const [symptom2, setSymptom2] = useState('');
 
+	// Holds and handles data from changes made in the add/edit forms.
 	const [formData, setFormData] = useState({
 		id: 0,
 		exam_date: dayjs(),
@@ -102,11 +54,17 @@ const MainPage = ({ submission, symptoms }) => {
 		symptom_2: '',
 		diagnosis: '',
 	});
+	const handleFormChange = async (e) => {
+		const name = e.target.name;
+		const value = e.target.value;
+		setFormData({ ...formData, [name]: value });
+	};
 
-	const [open, setOpen] = useState(false);
-	const handleClose = () => setOpen(false);
-	const handleOpen = (record) => {
-		setOpen(true);
+	// Controls "Edit Record" modal open/close status and actions.
+	const [openEdit, setOpenEdit] = useState(false);
+	const handleCloseEdit = () => setOpenEdit(false);
+	const handleOpenEdit = (record) => {
+		setOpenEdit(true);
 		setSymptom1(record.symptom_1);
 		setSymptom2(record.symptom_2);
 		const symptom1 = symptoms.find(
@@ -155,12 +113,6 @@ const MainPage = ({ submission, symptoms }) => {
 		}
 	};
 
-	const handleFormChange = async (e) => {
-		const name = e.target.name;
-		const value = e.target.value;
-		setFormData({ ...formData, [name]: value });
-	};
-
 	const handleUpdate = async (e) => {
 		e.preventDefault();
 		const symptoms = formData.symptom_2
@@ -168,9 +120,8 @@ const MainPage = ({ submission, symptoms }) => {
 			: `[${formData.symptom_1}]`;
 		const gender = JSON.parse(formData.is_male) ? 'male' : 'female';
 		const birth_year = formData.birth_year;
-		const api_medic_token =
-			'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImhucnlrbUBnbWFpbC5jb20iLCJyb2xlIjoiVXNlciIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL3NpZCI6IjEyOTI5IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy92ZXJzaW9uIjoiMjAwIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9saW1pdCI6Ijk5OTk5OTk5OSIsImh0dHA6Ly9leGFtcGxlLm9yZy9jbGFpbXMvbWVtYmVyc2hpcCI6IlByZW1pdW0iLCJodHRwOi8vZXhhbXBsZS5vcmcvY2xhaW1zL2xhbmd1YWdlIjoiZW4tZ2IiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL2V4cGlyYXRpb24iOiIyMDk5LTEyLTMxIiwiaHR0cDovL2V4YW1wbGUub3JnL2NsYWltcy9tZW1iZXJzaGlwc3RhcnQiOiIyMDIzLTA5LTIxIiwiaXNzIjoiaHR0cHM6Ly9zYW5kYm94LWF1dGhzZXJ2aWNlLnByaWFpZC5jaCIsImF1ZCI6Imh0dHBzOi8vaGVhbHRoc2VydmljZS5wcmlhaWQuY2giLCJleHAiOjE2OTcwNjEwODcsIm5iZiI6MTY5NzA1Mzg4N30.Q0hORt4pdRvVaYxgxk8-yxyVmANWlMhdm4-61zKp1ik';
-		const url = `https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=${symptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${api_medic_token}&format=json&language=en-gb`;
+
+		const url = `https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=${symptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${APIMEDIC_API_KEY}&format=json&language=en-gb`;
 		const response = await fetch(url);
 		if (response.ok) {
 			const data = await response.json();
@@ -209,7 +160,7 @@ const MainPage = ({ submission, symptoms }) => {
 				});
 			}
 			fetchRecords();
-			handleClose();
+			handleCloseEdit();
 		}
 	};
 	const handleDelete = async (id) => {
@@ -283,7 +234,7 @@ const MainPage = ({ submission, symptoms }) => {
 												>
 													View Details
 												</Button>
-												<Button onClick={() => handleOpen(record)}>
+												<Button onClick={() => handleOpenEdit(record)}>
 													<SvgIcon>
 														<EditOutlinedIcon color="primary" />
 													</SvgIcon>
@@ -310,8 +261,8 @@ const MainPage = ({ submission, symptoms }) => {
 			<Modal
 				aria-labelledby="spring-modal-title"
 				aria-describedby="spring-modal-description"
-				open={open}
-				onClose={handleClose}
+				open={openEdit}
+				onClose={handleCloseEdit}
 				closeAfterTransition
 				slots={{ backdrop: Backdrop }}
 				slotProps={{
@@ -321,7 +272,7 @@ const MainPage = ({ submission, symptoms }) => {
 				}}
 				sx={{ m: 6 }}
 			>
-				<Fade in={open}>
+				<Fade in={openEdit}>
 					<Box sx={style}>
 						<Box
 							sx={{
@@ -332,7 +283,7 @@ const MainPage = ({ submission, symptoms }) => {
 							<Link component="button">
 								<CloseIcon
 									sx={{ fontSize: '2em', color: 'gray' }}
-									onClick={handleClose}
+									onClick={handleCloseEdit}
 								/>
 							</Link>
 						</Box>

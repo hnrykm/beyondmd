@@ -1,3 +1,3 @@
+# Script to install dependencies and start React
 npm install
-npm install -g npm@10.2.0
 npm start

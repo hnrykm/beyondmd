@@ -1,26 +1,31 @@
-import Modal from '@mui/material/Modal';
-import Backdrop from '@mui/material/Backdrop';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateField } from '@mui/x-date-pickers/DateField';
-import TextField from '@mui/material/TextField';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormLabel from '@mui/material/FormLabel';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import dayjs from 'dayjs';
-import MenuItem from '@mui/material/MenuItem';
-import Button from '@mui/material/Button';
+import {
+	Backdrop,
+	Box,
+	Button,
+	FormControl,
+	FormControlLabel,
+	FormLabel,
+	Link,
+	MenuItem,
+	Modal,
+	Radio,
+	RadioGroup,
+	TextField,
+	Typography,
+} from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { Link } from '@mui/material';
+
+// Handles the examination date field
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { DateField } from '@mui/x-date-pickers/DateField';
+
+import dayjs from 'dayjs'; // For datetime formatting
 
 export default function AddSingleModal({
-	open,
-	handleClose,
+	openSingle,
+	handleCloseSingle,
 	Fade,
 	style,
 	submitHandlerDiagnosis,
@@ -33,10 +38,8 @@ export default function AddSingleModal({
 }) {
 	return (
 		<Modal
-			aria-labelledby="spring-modal-title"
-			aria-describedby="spring-modal-description"
-			open={open}
-			onClose={handleClose}
+			open={openSingle}
+			onClose={handleCloseSingle}
 			closeAfterTransition
 			slots={{ backdrop: Backdrop }}
 			slotProps={{
@@ -46,7 +49,7 @@ export default function AddSingleModal({
 			}}
 			sx={{ m: 6 }}
 		>
-			<Fade in={open}>
+			<Fade in={openSingle}>
 				<Box sx={style}>
 					<Box
 						sx={{
@@ -57,16 +60,11 @@ export default function AddSingleModal({
 						<Link component="button">
 							<CloseIcon
 								sx={{ fontSize: '2em', color: 'gray' }}
-								onClick={handleClose}
+								onClick={handleCloseSingle}
 							/>
 						</Link>
 					</Box>
-					<Typography
-						id="spring-modal-title"
-						variant="h4"
-						component="h4"
-						sx={{ mb: 2 }}
-					>
+					<Typography variant="h4" component="h4" sx={{ mb: 2 }}>
 						Add a Single Record
 					</Typography>
 					<Box
@@ -77,6 +75,7 @@ export default function AddSingleModal({
 						autoComplete="off"
 						onSubmit={submitHandlerDiagnosis}
 					>
+						{/* Examination Date Field */}
 						<LocalizationProvider dateAdapter={AdapterDayjs}>
 							<DemoContainer components={['DateField']}>
 								<DateField
@@ -92,9 +91,9 @@ export default function AddSingleModal({
 								/>
 							</DemoContainer>
 						</LocalizationProvider>
+						{/* First Name Field */}
 						<TextField
 							required
-							id="outlined-basic"
 							label="First Name"
 							variant="outlined"
 							size="small"
@@ -102,9 +101,9 @@ export default function AddSingleModal({
 							value={formData.first_name}
 							onChange={handleFormChange}
 						/>
+						{/* LastName Field */}
 						<TextField
 							required
-							id="outlined-basic"
 							label="Last Name"
 							variant="outlined"
 							size="small"
@@ -112,9 +111,9 @@ export default function AddSingleModal({
 							value={formData.last_name}
 							onChange={handleFormChange}
 						/>
+						{/* Birth Year Field */}
 						<TextField
 							required
-							id="outlined-basic"
 							type="number"
 							max="2500"
 							label="Birth Year"
@@ -124,15 +123,10 @@ export default function AddSingleModal({
 							value={formData.birth_year}
 							onChange={handleFormChange}
 						/>
+						{/* Gender Radio Buttons */}
 						<FormControl sx={{ pl: 1.5 }}>
-							<FormLabel id="demo-row-radio-buttons-group-label">
-								Gender *
-							</FormLabel>
-							<RadioGroup
-								row
-								aria-labelledby="demo-row-radio-buttons-group-label"
-								name="is_male"
-							>
+							<FormLabel>Gender *</FormLabel>
+							<RadioGroup row name="is_male">
 								<FormControlLabel
 									value={true}
 									control={
@@ -155,11 +149,11 @@ export default function AddSingleModal({
 								/>
 							</RadioGroup>
 						</FormControl>
+						{/* Primary Symptom Dropdown */}
 						<FormControl fullWidth>
 							<TextField
 								required={true}
 								select
-								id="demo-simple-select"
 								label="Primary Symptom"
 								name="symptom_1"
 								value={formData.symptom_1}
@@ -177,11 +171,11 @@ export default function AddSingleModal({
 									))}
 							</TextField>
 						</FormControl>
+						{/* Secondary Symptom Dropdown */}
 						<FormControl fullWidth>
 							<TextField
 								select
 								label="Secondary Symptom (Optional)"
-								id="demo-simple-select"
 								name="symptom_2"
 								value={formData.symptom_2}
 								onChange={handleFormChange}
@@ -200,6 +194,7 @@ export default function AddSingleModal({
 							</TextField>
 						</FormControl>
 						<Box sx={{ pt: 1, justifyContent: 'flex-end' }}>
+							{/* Reset and Submit buttons */}
 							<Button
 								variant="outlined"
 								color="teal"
