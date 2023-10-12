@@ -8,9 +8,9 @@ class Record(models.Model):
     last_name = models.CharField(max_length=100)
     birth_year = models.SmallIntegerField()
     is_male = models.BooleanField()
-    symptom_1 = models.CharField(max_length=100)
-    symptom_2 = models.CharField(max_length=100)
-    diagnosis = models.CharField(max_length=100)
+    symptom_1 = models.CharField(max_length=255)
+    symptom_2 = models.CharField(max_length=255)
+    diagnosis = models.TextField()
 
 
 # Label shown for each record in the Admin panel.

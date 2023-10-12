@@ -150,7 +150,7 @@ const NavBar = ({ setSubmission, symptoms, setSymptoms, APIMEDIC_API_KEY }) => {
 				? `[${symptom_1},${symptom_2}]`
 				: `[${symptom_1}]`;
 			const gender = is_male === 'TRUE' ? 'male' : 'female';
-			const url = `https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=${theSymptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${APIMEDIC_API_KEY}&format=json&language=en-gb`;
+			const url = `https://healthservice.priaid.ch/diagnosis?symptoms=${theSymptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${APIMEDIC_API_KEY}&format=json&language=en-gb`;
 			const response = await fetch(url);
 
 			// Step 2: Extract the diagnosis name from the response and prepare a POST request.
@@ -189,7 +189,7 @@ const NavBar = ({ setSubmission, symptoms, setSymptoms, APIMEDIC_API_KEY }) => {
 				}
 			}
 		}
-		// When all the records have been processed, re-render with setSubmission, and closet the modal.
+		// When all the records have been processed, re-render with setSubmission, and close the modal.
 		setSubmission(multipleRecords);
 		handleCloseMultiple();
 	};
