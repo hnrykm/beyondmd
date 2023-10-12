@@ -1,38 +1,25 @@
 import React, { useState, useEffect } from 'react';
-
-import Button from '@mui/material/Button';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import { Box, SvgIcon, Typography } from '@mui/material';
-import Backdrop from '@mui/material/Backdrop';
-import Modal from '@mui/material/Modal';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-import TextField from '@mui/material/TextField';
-import { Link } from '@mui/material';
-import MenuItem from '@mui/material/MenuItem';
-
+import {
+	Box,
+	SvgIcon,
+	Button,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+	Paper,
+} from '@mui/material';
 import { red } from '@mui/material/colors';
-
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
-import CloseIcon from '@mui/icons-material/Close';
-
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateField } from '@mui/x-date-pickers/DateField';
 
 import dayjs from 'dayjs';
 import { Fade, style } from './Fade'; // Fading animation for modal/dialog boxes
+
+import { RecordDetails } from './RecordDetails';
+import { EditModal } from './EditModal';
 
 const MainPage = ({ submission, symptoms, APIMEDIC_API_KEY }) => {
 	// Holds the data for all the records in the database.
@@ -67,12 +54,15 @@ const MainPage = ({ submission, symptoms, APIMEDIC_API_KEY }) => {
 		setOpenEdit(true);
 		setSymptom1(record.symptom_1);
 		setSymptom2(record.symptom_2);
+		// Use the symptoms list to find the ID of the diagnosis using the Name.
 		const symptom1 = symptoms.find(
 			(symptom) => symptom.Name === record.symptom_1
 		);
 		const symptom2 = symptoms.find(
 			(symptom) => symptom.Name === record.symptom_2
 		);
+		console.log(record.is_male);
+		// Prefills the form fields with the data for the record.
 		setFormData({
 			id: record.id,
 			exam_date: dayjs(record.exam_date),
@@ -85,10 +75,12 @@ const MainPage = ({ submission, symptoms, APIMEDIC_API_KEY }) => {
 		});
 	};
 
+	// Controls "View Details" modal open/close status and actions.
 	const [openDetails, setOpenDetails] = useState(false);
 	const handleCloseDetails = () => setOpenDetails(false);
 	const handleOpenDetails = (record) => {
 		setOpenDetails(true);
+		// Uses Symptom1, Symptom2 to display the symptom names.
 		setSymptom1(record.symptom_1);
 		setSymptom2(record.symptom_2);
 		setFormData({
@@ -104,6 +96,7 @@ const MainPage = ({ submission, symptoms, APIMEDIC_API_KEY }) => {
 		});
 	};
 
+	// Fetches up-to-date list of all records in the database.
 	const fetchRecords = async () => {
 		const url = 'http://localhost:8000/api/records/';
 		const response = await fetch(url);
@@ -113,16 +106,19 @@ const MainPage = ({ submission, symptoms, APIMEDIC_API_KEY }) => {
 		}
 	};
 
-	const handleUpdate = async (e) => {
+	// Multi-step process to use the symptoms to fetch a diagnosis and update a single record.
+	// Step 1: Using the selected symptom(s), gender, and age, get a diagnosis from API Medic.
+	const handleUpdateRecord = async (e) => {
 		e.preventDefault();
 		const symptoms = formData.symptom_2
 			? `[${formData.symptom_1},${formData.symptom_2}]`
 			: `[${formData.symptom_1}]`;
 		const gender = JSON.parse(formData.is_male) ? 'male' : 'female';
 		const birth_year = formData.birth_year;
-
 		const url = `https://sandbox-healthservice.priaid.ch/diagnosis?symptoms=${symptoms}&gender=${gender}&year_of_birth=${birth_year}&token=${APIMEDIC_API_KEY}&format=json&language=en-gb`;
 		const response = await fetch(url);
+
+		// Step 2: Extract the diagnosis name from the response and prepare a POST request.
 		if (response.ok) {
 			const data = await response.json();
 			const diagnoses = data.map((diagnosis) => diagnosis.Issue.ProfName);
@@ -137,6 +133,8 @@ const MainPage = ({ submission, symptoms, APIMEDIC_API_KEY }) => {
 			postData.symptom_1 = symptom1;
 			postData.symptom_2 = symptom2;
 			postData.diagnosis = diagnoses.join(', ');
+
+			// Step 3: Make a POST request, clear the form data, re-render with fetchRecords(), and close the modal.
 			const recordUrl = `http://localhost:8000/api/records/${formData.id}`;
 			const fetchConfig = {
 				method: 'put',
@@ -163,7 +161,9 @@ const MainPage = ({ submission, symptoms, APIMEDIC_API_KEY }) => {
 			handleCloseEdit();
 		}
 	};
-	const handleDelete = async (id) => {
+
+	// Handles deleting a record and requires confirmation via a window.
+	const handleDeleteRecord = async (id) => {
 		const userConfirmed = window.confirm(
 			'Are you sure you want to delete this record?'
 		);
@@ -206,6 +206,7 @@ const MainPage = ({ submission, symptoms, APIMEDIC_API_KEY }) => {
 									<TableCell sx={{ fontWeight: 'bold' }}>Actions</TableCell>
 								</TableRow>
 							</TableHead>
+							{/* Maps over all the records and displays data on each row. */}
 							<TableBody>
 								{records &&
 									records.map((record) => (
@@ -225,6 +226,7 @@ const MainPage = ({ submission, symptoms, APIMEDIC_API_KEY }) => {
 											<TableCell sx={{ width: 400 }}>
 												{record.diagnosis}
 											</TableCell>
+											{/* Actions include View Details, Edit, and Delete icons */}
 											<TableCell>
 												<Button
 													variant="outlined"
@@ -241,7 +243,7 @@ const MainPage = ({ submission, symptoms, APIMEDIC_API_KEY }) => {
 												</Button>
 												<Button
 													onClick={() => {
-														handleDelete(record.id);
+														handleDeleteRecord(record.id);
 													}}
 												>
 													<SvgIcon>
@@ -258,245 +260,30 @@ const MainPage = ({ submission, symptoms, APIMEDIC_API_KEY }) => {
 					</TableContainer>
 				</Box>
 			</Box>
-			<Modal
-				aria-labelledby="spring-modal-title"
-				aria-describedby="spring-modal-description"
-				open={openEdit}
-				onClose={handleCloseEdit}
-				closeAfterTransition
-				slots={{ backdrop: Backdrop }}
-				slotProps={{
-					backdrop: {
-						TransitionComponent: Fade,
-					},
-				}}
-				sx={{ m: 6 }}
-			>
-				<Fade in={openEdit}>
-					<Box sx={style}>
-						<Box
-							sx={{
-								display: 'flex',
-								justifyContent: 'flex-end',
-							}}
-						>
-							<Link component="button">
-								<CloseIcon
-									sx={{ fontSize: '2em', color: 'gray' }}
-									onClick={handleCloseEdit}
-								/>
-							</Link>
-						</Box>
-						<Typography
-							id="spring-modal-title"
-							variant="h4"
-							component="h4"
-							sx={{ mb: 2 }}
-						>
-							Edit Record
-						</Typography>
-						<Box
-							component="form"
-							sx={{
-								'& > :not(style)': { m: 1, width: '35ch' },
-							}}
-							autoComplete="off"
-							onSubmit={handleUpdate}
-						>
-							<LocalizationProvider dateAdapter={AdapterDayjs}>
-								<DemoContainer components={['DateField']}>
-									<DateField
-										required
-										fullWidth
-										label="Examination Date"
-										name="exam_date"
-										size="small"
-										value={dayjs(formData.exam_date)}
-										onChange={(value) =>
-											setFormData({ ...formData, exam_date: value })
-										}
-									/>
-								</DemoContainer>
-							</LocalizationProvider>
-							<TextField
-								required
-								id="outlined-basic"
-								label="First Name"
-								variant="outlined"
-								size="small"
-								name="first_name"
-								value={formData.first_name}
-								onChange={handleFormChange}
-							/>
-							<TextField
-								required
-								id="outlined-basic"
-								label="Last Name"
-								variant="outlined"
-								size="small"
-								name="last_name"
-								value={formData.last_name}
-								onChange={handleFormChange}
-							/>
-							<TextField
-								required
-								id="outlined-basic"
-								type="number"
-								max="2500"
-								label="Birth Year"
-								variant="outlined"
-								size="small"
-								name="birth_year"
-								value={formData.birth_year}
-								onChange={handleFormChange}
-							/>
-							<FormControl sx={{ pl: 1.5 }}>
-								<FormLabel id="demo-row-radio-buttons-group-label">
-									Gender *
-								</FormLabel>
-								<RadioGroup
-									row
-									aria-labelledby="demo-row-radio-buttons-group-label"
-									name="is_male"
-								>
-									<FormControlLabel
-										value={true}
-										control={
-											<Radio
-												onClick={handleFormChange}
-												checked={formData.is_male === true}
-											/>
-										}
-										label="Male"
-									/>
-									<FormControlLabel
-										value={false}
-										control={
-											<Radio
-												onClick={handleFormChange}
-												checked={formData.is_male === false}
-											/>
-										}
-										label="Female"
-									/>
-								</RadioGroup>
-							</FormControl>
-							<FormControl fullWidth>
-								<TextField
-									required={true}
-									select
-									id="demo-simple-select"
-									label="Primary Symptom"
-									name="symptom_1"
-									value={formData.symptom_1}
-									onChange={handleFormChange}
-								>
-									{symptoms &&
-										symptoms.map((symptom) => (
-											<MenuItem
-												value={symptom.ID}
-												key={symptom.ID}
-												onClick={() => setSymptom1(symptom.Name)}
-											>
-												{symptom.Name}
-											</MenuItem>
-										))}
-								</TextField>
-							</FormControl>
-							<FormControl fullWidth>
-								<TextField
-									select
-									label="Secondary Symptom (Optional)"
-									id="demo-simple-select"
-									name="symptom_2"
-									value={formData.symptom_2}
-									onChange={handleFormChange}
-								>
-									<MenuItem value="" onClick={() => setSymptom2('')}>
-										Secondary Symptom (Optional)
-									</MenuItem>
-									{symptoms &&
-										symptoms.map((symptom) => (
-											<MenuItem
-												value={symptom.ID}
-												key={symptom.ID}
-												onClick={() => setSymptom2(symptom.Name)}
-											>
-												{symptom.Name}
-											</MenuItem>
-										))}
-								</TextField>
-							</FormControl>
-							<Box sx={{ pt: 1, justifyContent: 'flex-end' }}>
-								<Button variant="contained" type="submit">
-									Update
-								</Button>
-							</Box>
-						</Box>
-					</Box>
-				</Fade>
-			</Modal>
-			<Modal
-				aria-labelledby="spring-modal-title"
-				aria-describedby="spring-modal-description"
-				open={openDetails}
-				onClose={handleCloseDetails}
-				closeAfterTransition
-				slots={{ backdrop: Backdrop }}
-				slotProps={{
-					backdrop: {
-						TransitionComponent: Fade,
-					},
-				}}
-				sx={{ m: 6 }}
-			>
-				<Fade in={openDetails}>
-					<Box sx={style}>
-						<Box
-							sx={{
-								display: 'flex',
-								justifyContent: 'flex-end',
-							}}
-						>
-							<Link component="button">
-								<CloseIcon
-									sx={{ fontSize: '2em', color: 'gray' }}
-									onClick={handleCloseDetails}
-								/>
-							</Link>
-						</Box>
-						<Typography
-							id="spring-modal-title"
-							variant="h4"
-							component="h4"
-							sx={{ mb: 2 }}
-						>
-							{formData.first_name} {formData.last_name}
-						</Typography>
-						<p>
-							{formData.is_male === true ? 'Male' : 'Female'}, Born{' '}
-							{formData.birth_year} (Age {dayjs().year() - formData.birth_year})
-							<br />
-							<Typography sx={{ fontStyle: 'italic' }}>
-								Examined on {dayjs(formData.exam_date).format('MM/DD/YYYY')}
-							</Typography>
-						</p>
-						{symptom2 ? 'Symptoms include:' : 'Symptom:'}
-						<ul>
-							<li>{symptom1}</li>
-							{symptom2 ? <li>{symptom2}</li> : ''}
-						</ul>
-						{formData.diagnosis && formData.diagnosis.length === 1
-							? 'Possible Diagnosis:'
-							: 'Possible Diagnoses:'}
-						<br />
-						<ul>
-							{formData.diagnosis &&
-								formData.diagnosis.map((d, id) => <li key={id}>{d}</li>)}
-						</ul>
-					</Box>
-				</Fade>
-			</Modal>
+			{/* Record Details Component */}
+			<RecordDetails
+				openDetails={openDetails}
+				handleCloseDetails={handleCloseDetails}
+				Fade={Fade}
+				style={style}
+				symptom2={symptom2}
+				symptom1={symptom1}
+				formData={formData}
+			/>
+			{/* Edit Modal Component */}
+			<EditModal
+				openEdit={openEdit}
+				handleCloseEdit={handleCloseEdit}
+				Fade={Fade}
+				style={style}
+				handleUpdateRecord={handleUpdateRecord}
+				formData={formData}
+				setFormData={setFormData}
+				handleFormChange={handleFormChange}
+				symptoms={symptoms}
+				setSymptom1={setSymptom1}
+				setSymptom2={setSymptom2}
+			/>
 		</div>
 	);
 };

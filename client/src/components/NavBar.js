@@ -154,7 +154,7 @@ const NavBar = ({ setSubmission, symptoms, setSymptoms, APIMEDIC_API_KEY }) => {
 			const response = await fetch(url);
 
 			// Step 2: Extract the diagnosis name from the response and prepare a POST request.
-			// Use the symptoms list to find the name of the diagnosis using the ID.
+			// Use the symptoms list to find the Name of the diagnosis using the ID.
 			if (response.ok) {
 				const data = await response.json();
 				const diagnoses = data.map((diagnosis) => diagnosis.Issue.ProfName);
@@ -212,7 +212,7 @@ const NavBar = ({ setSubmission, symptoms, setSymptoms, APIMEDIC_API_KEY }) => {
 							<span className="navy">!</span>
 						</h1>
 						<Box sx={{ ml: 10 }}>
-							{/* "Add Single Record" button and modal */}
+							{/* "Add Single Record" button and modal component */}
 							<Button
 								variant="contained"
 								color="teal"
@@ -234,7 +234,7 @@ const NavBar = ({ setSubmission, symptoms, setSymptoms, APIMEDIC_API_KEY }) => {
 								setSymptom2={setSymptom2}
 								setFormData={setFormData}
 							/>
-							{/* "Add Multiple Records" button and modal */}
+							{/* "Add Multiple Records" button and modal component */}
 							<Button
 								variant="contained"
 								color="teal"
@@ -251,7 +251,7 @@ const NavBar = ({ setSubmission, symptoms, setSymptoms, APIMEDIC_API_KEY }) => {
 								handleMultipleRecords={handleMultipleRecords}
 								setMultipleRecords={setMultipleRecords}
 							/>
-							{/* "View Resume" button and modal */}
+							{/* "View Resume" button and modal component */}
 							<Button
 								variant="contained"
 								color="teal"
